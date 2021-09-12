@@ -11,9 +11,11 @@
             <form action="">
                 @csrf
 
+                
+
                 <x-input-select-book class="mb-3">Book</x-input-select-book>
 
-                <div class="mb-3">
+                <div class="mt-3 mb-3">
                     <x-label>Challange Finish Date</x-label>
                     <x-pikaday name="finish_at"
                         type="date"
@@ -28,6 +30,8 @@
                     @enderror
                 </div>
 
+
+                
                 <x-flat-pickr name="birthday" />
 
             </form>
