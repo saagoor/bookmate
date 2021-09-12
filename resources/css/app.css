@@ -1,0 +1,36 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  @font-face {
+    font-family: "Recoleta";
+    src: url("../fonts/Recoleta-Regular.otf");
+  }
+  body {
+    /* background-image: url('../images/books-bg-transparent.png'); */
+    background-repeat: repeat;
+    background-size: 1200px 1200px;
+  }
+  a {
+    @apply transition;
+  }
+  a:not([class]),
+  a.default {
+    @apply hover:text-primary-600 focus:text-primary-600;
+  }
+  [x-cloak] {
+    @apply !hidden;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply tracking-wide font-heading;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-md shadow bg-primary-50;
+  }
+}
