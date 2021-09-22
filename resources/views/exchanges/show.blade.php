@@ -28,40 +28,46 @@ $book = $exchange->book;
             </h3>
             <div class="flex flex-col gap-6 p-4 sm:items-start sm:p-6 md:flex-row card">
                 <div class="relative flex-1">
-                    <div class="absolute top-0 bottom-0 z-0 -right-5 text-primary-200 -left-5 sm:-left-6">
-                        <svg preserveAspectRatio="none"
-                            class="w-full h-full"
-                            fill="currentColor"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 32 32">
-                            <title>book</title>
-                            <path
-                                d="M28 4v26h-21c-1.657 0-3-1.343-3-3s1.343-3 3-3h19v-24h-20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24v-28h-2z">
-                            </path>
-                            <path
-                                d="M7.002 26v0c-0.001 0-0.001 0-0.002 0-0.552 0-1 0.448-1 1s0.448 1 1 1c0.001 0 0.001-0 0.002-0v0h18.997v-2h-18.997z">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="relative z-10 flex flex-col justify-between w-2/3 pt-16 pb-40 pl-14 h-3/4 gap-y-14">
-                        <h1 class="text-3xl italic font-black">{{ $book->name }}</h1>
-                        <div>
-                            <p class="text-sm">Written By</p>
-                            @foreach ($book->writers as $writer)
+                    @if ($book->cover)
+                        <x-img class="w-full rounded-lg"
+                            :src="$book->cover_url" />
+                    @else
+                        <div class="absolute top-0 bottom-0 z-0 -right-5 text-primary-200 -left-5 sm:-left-6">
+                            <svg preserveAspectRatio="none"
+                                class="w-full h-full"
+                                fill="currentColor"
+                                version="1.1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 32 32">
+                                <title>book</title>
+                                <path
+                                    d="M28 4v26h-21c-1.657 0-3-1.343-3-3s1.343-3 3-3h19v-24h-20c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h24v-28h-2z">
+                                </path>
+                                <path
+                                    d="M7.002 26v0c-0.001 0-0.001 0-0.002 0-0.552 0-1 0.448-1 1s0.448 1 1 1c0.001 0 0.001-0 0.002-0v0h18.997v-2h-18.997z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <div class="relative z-10 flex flex-col justify-between w-2/3 pt-16 pb-40 pl-14 h-3/4 gap-y-14">
+                            <h1 class="text-3xl italic font-black">{{ $book->name }}</h1>
+                            <div>
+                                <p class="text-sm">Written By</p>
+                                @foreach ($book->writers as $writer)
+                                    <p class="font-semibold">
+                                        <a href="{{ route('writers.show', $writer) }}">{{ $writer->name }}</a>
+                                    </p>
+                                @endforeach
+                            </div>
+                            <div>
+                                <p class="text-sm">Published By</p>
                                 <p class="font-semibold">
-                                    <a href="{{ route('writers.show', $writer) }}">{{ $writer->name }}</a>
+                                    <a
+                                        href="{{ route('publishers.show', $book->publisher) }}">{{ $book->publisher->name }}</a>
                                 </p>
-                            @endforeach
+                            </div>
                         </div>
-                        <div>
-                            <p class="text-sm">Published By</p>
-                            <p class="font-semibold">
-                                <a
-                                    href="{{ route('publishers.show', $book->publisher) }}">{{ $book->publisher->name }}</a>
-                            </p>
-                        </div>
-                    </div>
+                    @endif
                 </div>
                 <div class="flex-1">
                     @auth
@@ -69,7 +75,7 @@ $book = $exchange->book;
                             @php
                                 $exchange->loadCount('offers');
                             @endphp
-                            <div class="px-4 py-4 mb-6 sm:px-6 card">
+                            <div class="px-4 py-4 mb-6 bg-primary-300 sm:px-6 card">
                                 <p class="mb-3 text-2xl font-bold">{{ $exchange->offers_count }} Offer Received</p>
                                 <x-exchange-offers :exchange="$exchange"
                                     button-class="" />
@@ -77,46 +83,49 @@ $book = $exchange->book;
                         @else
                             @if ($exchange->current_user_sent_offer)
                                 <p class="p-4 mb-6 text-lg font-semibold bg-green-100 rounded-md shadow">
-                                    <x-heroicon-s-check class="w-8 h-8 mr-2 border-2 rounded-full -mt-1.5 text-green-500 border-green-200"/>
+                                    <x-heroicon-s-check
+                                        class="w-8 h-8 mr-2 border-2 rounded-full -mt-1.5 text-green-500 border-green-200" />
                                     You have sent an exchange offer.
                                 </p>
                             @endif
                             @if (!$exchange->accepted_offer_id)
-                            <div class="flex flex-col gap-3 mb-6 sm:flex-row">
-                                @if (!$exchange->current_user_sent_offer)
-                                    <div class="flex-1"
-                                        x-data="{show: {{ $errors->any() ? 'true' : 'false' }}}">
-                                        <x-link-button color="light"
-                                            @click.prevent="show = true"
-                                            class="w-full py-3 text-base sm:text-lg">
-                                            <x-heroicon-o-hand class="mr-2 -mt-0.5 transform rotate-90" />
-                                            Send Offer
-                                        </x-link-button>
-                                        <x-modal-form :action="route('exchanges.offers.store', $exchange)"
-                                            submit-text="Send Your Offer">
+                                <div class="flex flex-col gap-3 mb-6 sm:flex-row">
+                                    @if (!$exchange->current_user_sent_offer)
+                                        <div class="flex-1"
+                                            x-data="{show: {{ $errors->any() ? 'true' : 'false' }}}">
+                                            <x-button type="button"
+                                                color="light"
+                                                @click.prevent="show = true"
+                                                class="w-full py-3 text-base sm:text-lg">
+                                                <x-heroicon-o-hand class="mr-2 -mt-0.5 transform rotate-90" />
+                                                Send Offer
+                                            </x-button>
+                                            <x-modal-form :action="route('exchanges.offers.store', $exchange)"
+                                                submit-text="Send Your Offer">
 
-                                            <x-input-select-book class="mb-3"
-                                                name="offered_book_id">Your Book</x-input-select-book>
+                                                <x-input-select-book class="mb-3"
+                                                    name="offered_book_id">Your Book</x-input-select-book>
 
-                                            <x-input-select-book-condition class="mb-3"
-                                                label="Book's Condition" />
+                                                <x-input-select-book-condition class="mb-3"
+                                                    label="Book's Condition" />
 
-                                            <x-input-text name="book_edition"
-                                                placeholder="i.e 1st">Edition</x-input-text>
+                                                <x-input-text name="book_edition"
+                                                    placeholder="i.e 1st">Edition</x-input-text>
 
-                                        </x-modal-form>
-                                    </div>
-                                @endif
-                                <x-link-button class="flex-1 py-3 text-base sm:text-lg"
-                                    href="#conversation">
-                                    <x-heroicon-o-chat class="mr-2 -mt-0.5" />
-                                    Contact Owner
-                                </x-link-button>
-                            </div>
+                                            </x-modal-form>
+                                        </div>
+                                    @endif
+                                    <x-link-button class="flex-1 py-3 text-base sm:text-lg"
+                                        href="#conversation">
+                                        <x-heroicon-o-chat class="mr-2 -mt-0.5" />
+                                        Contact Owner
+                                    </x-link-button>
+                                </div>
                             @elseif ($exchange->accepted_offer->user_id == auth()->user()->id)
                                 <div class="p-4 mb-6 leading-tight bg-green-100 rounded-md shadow">
-                                    <p>You offered to exchange with 
-                                        <span class="font-semibold">{{ $exchange->accepted_offer->offered_book->name ?? '' }}.</span>
+                                    <p>You offered to exchange with
+                                        <span
+                                            class="font-semibold">{{ $exchange->accepted_offer->offered_book->name ?? '' }}.</span>
                                     </p>
                                     <p>And {{ $exchange->user->name }} has accepted your exchange offer.</p>
                                 </div>
@@ -134,6 +143,26 @@ $book = $exchange->book;
                         </div>
                     @endauth
                     <div class="overflow-hidden border rounded-lg bg-primary-50">
+                        @if ($book->cover)
+                            <div class="flex flex-col gap-3 p-4">
+                                <h1 class="text-3xl italic font-black">{{ $book->name }}</h1>
+                                <div>
+                                    <p class="text-sm">Written By</p>
+                                    @foreach ($book->writers as $writer)
+                                        <p class="font-semibold">
+                                            <a href="{{ route('writers.show', $writer) }}">{{ $writer->name }}</a>
+                                        </p>
+                                    @endforeach
+                                </div>
+                                <div>
+                                    <p class="text-sm">Published By</p>
+                                    <p class="font-semibold">
+                                        <a
+                                            href="{{ route('publishers.show', $book->publisher) }}">{{ $book->publisher->name }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
                         <table class="w-full">
                             <tr>
                                 <td class="px-4 py-2 border-t border-b">Book Condition</td>
@@ -167,7 +196,9 @@ $book = $exchange->book;
                             <tr>
                                 <td class="px-4 py-2 border-t border-b">Category</td>
                                 <td class="px-0 py-2 border-t border-b">:</td>
-                                <td class="px-4 py-2 border-t border-b">{{ $book->category }}</td>
+                                <td class="px-4 py-2 border-t border-b">
+                                    <span class="capitalize">{{ $book->category }}</span>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -204,17 +235,36 @@ $book = $exchange->book;
                 @endif
             </div>
 
+            @if ($exchange->description)
+                {{-- Exchange Description --}}
+                <div class="p-4 my-6 sm:p-6 card">
+                    <h2 class="mb-3 text-xl font-semibold">Description</h2>
+                    <div>
+                        {!! $exchange->description !!}
+                    </div>
+                </div>
+            @endif
+
             {{-- Picture Previews --}}
             <div class="p-4 my-6 sm:p-6 card"
                 x-data="{
-                items: [
-                    '{{ asset('images/book-cover.jpg') }}',
-                    '{{ asset('images/book-cover.jpg') }}',
-                    '{{ asset('images/book-cover.jpg') }}',
-                    '{{ asset('images/book-cover.jpg') }}',
-                ],
+                items: {{ $exchange->previews->pluck('image_url') }},
                 show: false,
                 currentIndex: 0,
+                prev(){
+                    if(this.currentIndex == 0){
+                        this.currentIndex = this.items.length - 1;
+                    }else{
+                        this.currentIndex--;
+                    }
+                },
+                next(){
+                    if(this.currentIndex == this.items.length - 1){
+                        this.currentIndex = 0;
+                    }else{
+                        this.currentIndex++;
+                    }
+                }
             }">
                 <h2 class="mb-3 text-xl font-semibold">Picture Previews</h2>
                 <div class="flex flex-wrap gap-4">
@@ -229,17 +279,15 @@ $book = $exchange->book;
                 <x-modal>
                     <div class="px-4 pt-5 pb-4 text-center bg-white sm:p-6 sm:pb-4">
                         <img class="h-full max-h-screen mx-auto"
-                            :data-src="items[currentIndex]">
+                            :src="items[currentIndex]">
                     </div>
-                    <div class="justify-between px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="button"
-                            class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm">
-                            Prev
-                        </button>
-                        <button type="button"
-                            class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white border border-transparent rounded-md shadow-sm bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm">
-                            Next
-                        </button>
+                    <div class="flex justify-between px-4 py-3 bg-gray-50 sm:px-6">
+                        <x-button type="button" @click="prev()">
+                            <x-heroicon-o-arrow-left class="h-4 mr-1" /> Prev
+                        </x-button>
+                        <x-button type="button" @click="next()">
+                            Next <x-heroicon-o-arrow-right class="h-4 ml-1" />
+                        </x-button>
                     </div>
                 </x-modal>
             </div>
@@ -247,55 +295,12 @@ $book = $exchange->book;
             {{-- Similar Books --}}
             <div class="p-4 my-6 sm:p-6 card">
                 <h2 class="mb-3 text-xl font-semibold">Similar Books</h2>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#books/show">
-                        <div>
-                            <img class="w-32 cursor-pointer"
-                                data-src="{{ asset('images/book-cover.jpg') }}"
-                                alt="Book Title">
-                            <p class="mt-1 text-sm">The Prophet</p>
-                        </div>
-                    </a>
-                    <a href="#books/show">
-                        <div>
-                            <img class="w-32 cursor-pointer"
-                                data-src="{{ asset('images/book-cover.jpg') }}"
-                                alt="Book Title">
-                            <p class="mt-1 text-sm">The Prophet</p>
-                        </div>
-                    </a>
-                    <a href="#books/show">
-                        <div>
-                            <img class="w-32 cursor-pointer"
-                                data-src="{{ asset('images/book-cover.jpg') }}"
-                                alt="Book Title">
-                            <p class="mt-1 text-sm">The Prophet</p>
-                        </div>
-                    </a>
-                    <a href="#books/show">
-                        <div>
-                            <img class="w-32 cursor-pointer"
-                                data-src="{{ asset('images/book-cover.jpg') }}"
-                                alt="Book Title">
-                            <p class="mt-1 text-sm">The Prophet</p>
-                        </div>
-                    </a>
-                    <a href="#books/show">
-                        <div>
-                            <img class="w-32 cursor-pointer"
-                                data-src="{{ asset('images/book-cover.jpg') }}"
-                                alt="Book Title">
-                            <p class="mt-1 text-sm">The Prophet</p>
-                        </div>
-                    </a>
-                    <a href="#books/show">
-                        <div>
-                            <img class="w-32 cursor-pointer"
-                                data-src="{{ asset('images/book-cover.jpg') }}"
-                                alt="Book Title">
-                            <p class="mt-1 text-sm">The Prophet</p>
-                        </div>
-                    </a>
+                <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+                    @forelse ($similar_books as $book)
+                        <x-book-card :book="$book" />
+                    @empty
+                        <p>Sorry, no similar book has been found.</p>
+                    @endforelse
                 </div>
             </div>
         </div>

@@ -11,7 +11,9 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = Book::all();
+        $books = Book::search()
+            ->withAvg('reviews', 'rating')
+            ->paginate(12);
         return view('books.index', compact('books'));
     }
 
@@ -31,7 +33,7 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
-        return view('books.show');
+        return view('books.show', compact('book'));
     }
 
     public function edit(Book $book)

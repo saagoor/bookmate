@@ -28,11 +28,12 @@ Route::resource('books', BookController::class)->only(['index', 'show']);
 Route::resource('writers', WriterController::class)->only(['index', 'show']);
 Route::resource('publishers', PublisherController::class)->only(['index', 'show']);
 Route::resource('exchanges', ExchangeController::class)->only(['index', 'create', 'store', 'show']);
-Route::resource('users', UserController::class)->only(['show', 'edit', 'update']);
+Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update']);
 Route::resource('exchanges.offers', ExchangeOfferController::class);
 Route::resource('challanges', ChallangeController::class)->only(['index', 'create', 'store', 'show']);
 Route::post('challanges/{challange}/join', [ChallangeController::class, 'join'])->name('challanges.join');
 Route::post('challanges/{challange}/update-participant', [ChallangeController::class, 'updateParticipant'])->name('challanges.updateParticipant');
+Route::post('challanges/{challange}/invite', [ChallangeController::class, 'invite'])->name('challanges.invite');
 
 
 // Admin Panel

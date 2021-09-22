@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Laravel\Scout\Searchable;
 
 class Book extends Model
 {
@@ -14,6 +14,8 @@ class Book extends Model
     protected $dates = ['published_at'];
     protected $guarded = [];
     protected $appends = ['cover_url'];
+
+    public static $searcables = ['name', 'isbn', 'publisher:name', 'writers:name', 'translators:name'];
 
     public static $categories = [
         "Fantasy",
@@ -41,17 +43,6 @@ class Book extends Model
         "Humor",
         "Children’s",
     ];
-
-    /**
-     * Modify the query used to retrieve models when making all of the models searchable.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    protected function makeAllSearchableUsing($query)
-    {
-        return $query->with(['publisher']);
-    }
 
 
     public function getCoverUrlAttribute()
@@ -81,5 +72,10 @@ class Book extends Model
     public function publisher()
     {
         return $this->belongsTo(Publisher::class)->withDefault();
+    }
+
+    public function reviews()
+    {
+       return $this->morphMany(Review::class, 'reviewable');
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
@@ -42,10 +42,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['image_url'];
+
+    public static $searchables = [
+        'name',
+        'email',
+    ];
 
     public function getImageUrlAttribute()
     {
         $default = "https://avatars.dicebear.com/api/croodles-neutral/:" . $this->email . ".svg";
+        $default = "https://unavatar.now.sh/{$this->email}?fallback={$default}";
         if($this->image){
             return asset('storage/' . $this->image);
         }

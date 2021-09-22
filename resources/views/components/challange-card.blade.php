@@ -47,7 +47,7 @@
                 </x-link-button>
             </div>
             <div class="flex justify-between mt-auto text-sm">
-                <p>1 more weekend to go</p>
+                <p>{{ $challange->finish_at->diffForHumans() }}.</p>
                 <div class="flex justify-end gap-3">
                     <form method="POST">
                         @csrf
@@ -56,7 +56,7 @@
                             <x-heroicon-o-heart />
                         </button> 12
                     </form>
-                    <a href="#">
+                    <a href="{{ route('challanges.show', $challange) }}">
                         <x-bi-chat-left-dots /> 50
                     </a>
                 </div>

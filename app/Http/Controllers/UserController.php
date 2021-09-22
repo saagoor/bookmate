@@ -8,6 +8,23 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+    public function index(Request $request)
+    {
+        $request->validate([
+            'search' => 'required',
+        ]);
+        $users = $this->search(User::class)->paginate(10);
+
+        if($request->has('search') && auth()->check()){
+            $users->forget(auth()->user()->id);
+        }
+        if ($request->expectsJson()) {
+            return $users;
+        }
+
+        return view('users.index', compact('users'));
+    }
+
 
     public function edit(User $user)
     {
@@ -22,7 +39,7 @@ class UserController extends Controller
         ]);
         $user->name = $request->name;
         $user->email = $request->email;
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $user->image = $request->image->store('users');
         }
         $user->save();
@@ -34,4 +51,5 @@ class UserController extends Controller
         $user->delete();
         return back()->with('success', "The user '$user->name' has been deleted.");
     }
+
 }

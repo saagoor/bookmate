@@ -27,22 +27,18 @@ class DatabaseSeeder extends Seeder
             'admin' => true,
         ]);
         User::factory()->create([
+            'name'  => 'মেহেদী হাসাইন',
             'email' => 'mhsagor91@gmail.com',
             'password'  => bcrypt('password'),
-            'admin' => true,
+            'admin' => false,
         ]);
 
         User::factory(10)->create();
-        Publisher::factory(10)->create();
-        Writer::factory(10)->create();
 
-        Book::factory(10)
-        ->hasAttached(Writer::factory()->count(rand(1, 2)))
-        ->hasAttached(Writer::factory()->count(rand(1, 2)), ['translator' => true])
-        ->create();
+        $this->call(BooksSeeder::class);
 
-        Exchange::factory(5)->create();
+        Exchange::factory(10)->create();
 
-        Challange::factory(5)->hasParticipants(rand(2, 5))->create();
+        Challange::factory(10)->hasParticipants(rand(2, 5))->create();
     }
 }

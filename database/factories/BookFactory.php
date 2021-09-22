@@ -30,7 +30,8 @@ class BookFactory extends Factory
             'isbn'  => $this->faker->isbn10(),
             'published_at'  => $this->faker->date(),
             'language'      => $this->faker->randomElement(['English', 'Bangla']),
-            'category'      => $this->faker->randomElement(Book::$categories)
+            'category'      => $this->faker->randomElement(Book::$categories),
+            'page_count'    => rand(100, 500),
         ];
     }
 }

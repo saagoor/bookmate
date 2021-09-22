@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Exchange;
 use App\Models\ExchangeOffer;
 use Illuminate\Http\Request;
@@ -9,14 +10,15 @@ use Illuminate\Http\Request;
 class ExchangeController extends Controller
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth')->except(['index', 'show']);
     }
 
     public function index()
     {
-        $exchanges = $this->search(Exchange::class)->paginate(5);
-        $exchanges->load(['user', 'book.writers', 'book.translators']);
+        $exchanges = Exchange::search()->paginate(5);
+
         return view('exchanges.index', compact('exchanges'));
     }
 
@@ -32,17 +34,29 @@ class ExchangeController extends Controller
             'book_condition' => 'required',
             'expected_book_id'  => 'nullable|integer',
             'description'   => 'nullable',
+            'previews'      => 'required|exclude',
+            'previews.*'      => 'required|image',
         ]);
 
         $exchange = $request->user()->exchanges()->create($exchangeData);
+
+        if ($request->hasFile('previews')) {
+            $previews = [];
+            foreach ($request->previews as $preview) {
+                $previews[]['image'] = $preview->store('exchanges');
+            }
+            $exchange->previews()->createMany($previews);
+        }
 
         return redirect()->route('exchanges.show', $exchange->id)->with('succes', 'Your exchange request has been posted. Please for offers from others.');
     }
 
     public function show(Exchange $exchange)
     {
-
-        return view('exchanges.show', compact('exchange'));
+        $similar_books = Book::where('category', 'like', "%{$exchange->book->category}%")
+            ->take(6)
+            ->with(['writers', 'translators'])->get();
+        return view('exchanges.show', compact('exchange', 'similar_books'));
     }
 
     public function offers(Exchange $exchange)

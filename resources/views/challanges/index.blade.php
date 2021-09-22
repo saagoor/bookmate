@@ -17,18 +17,37 @@ $title = 'Reading Challanges';
 
         <div class="flex items-start justify-between mb-6">
             <h2 class="text-xl font-semibold md:text-2xl">
+                
                 <a href="{{ url()->current() }}"
                     class="mr-12 default">
-                    <span class="relative {{ request('completed') ? 'opacity-50' : '' }}">Active & Upcoming <span
-                            class="absolute inline-flex items-center justify-center w-8 h-8 text-lg rounded-full -right-6 -top-6 bg-primary-400">5</span>
+                    <span class="relative {{ request('participated') ? 'opacity-50' : '' }}">
+                        <span>New & Upcoming</span>
+                        @if ($new_count)
+                        <span
+                            class="absolute inline-flex items-center justify-center w-8 h-8 text-lg rounded-full -right-6 -top-6 bg-primary-400">
+                            {{ $new_count }}
+                        </span>
+                        @endif
                     </span>
                 </a>
 
-                <a href="{{ url()->current() }}?completed=true">
-                    <span class="relative {{ !request('completed') ? 'opacity-50' : '' }}">Completed <span
-                            class="absolute inline-flex items-center justify-center w-8 h-8 text-lg rounded-full -right-6 -top-6 bg-primary-400">0</span></span>
+                @auth
+                <a href="{{ url()->current() }}?participated=true">
+                    <span class="relative {{ !request('participated') ? 'opacity-50' : '' }}">
+                        <span>Participated</span>
+                        @if ($participated_count)
+                        <span
+                            class="absolute inline-flex items-center justify-center w-8 h-8 text-lg rounded-full -right-6 -top-6 bg-primary-400">
+                            {{ $participated_count }}
+                        </span>
+                        @endif
+                    </span>
                 </a>
+                @endauth
+                
             </h2>
+
+            <x-form-search />
 
         </div>
 

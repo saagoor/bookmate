@@ -8,10 +8,8 @@
         <h1 class="mb-4 text-xl font-semibold sm:text-2xl">{{ $title }}</h1>
 
         <div class="">
-            <form action="">
+            <form action="{{ route('challanges.store') }}" method="POST">
                 @csrf
-
-                
 
                 <x-input-select-book class="mb-3">Book</x-input-select-book>
 
@@ -21,8 +19,7 @@
                         type="date"
                         format="DD MMMM YYYY"
                         :value="old('finish_at')"
-                        :option="[]"
-                        placeholder="01 January 2001"
+                        :placeholder="now()->addDays(rand(20, 30))->format('d F Y')"
                         class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-75" />
 
                     @error('finish_at')
@@ -30,9 +27,7 @@
                     @enderror
                 </div>
 
-
-                
-                <x-flat-pickr name="birthday" />
+                <x-button>Post Challange</x-button>
 
             </form>
         </div>

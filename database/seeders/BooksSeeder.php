@@ -5,9 +5,8 @@ namespace Database\Seeders;
 use App\Models\Book;
 use App\Models\Publisher;
 use App\Models\Writer;
-use Illuminate\Database\Eloquent\Factories\Sequence;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
 
 class BooksSeeder extends Seeder
 {
@@ -18,6 +17,10 @@ class BooksSeeder extends Seeder
      */
     public function run()
     {
+        Writer::truncate();
+        Publisher::truncate();
+        Book::truncate();
+
         $booksData = collect($this->books());
 
         $publishers = $booksData->pluck('publisher')->unique();
@@ -27,7 +30,7 @@ class BooksSeeder extends Seeder
         $publishers = $publishers->map(function($pub){
             return Publisher::factory()->make(['name' => $pub]);
         });
-        Publisher::insert($publishers);
+        Publisher::insert($publishers->toArray());
         $publishers = Publisher::all(['id', 'name']);
 
         // Insert Writers
@@ -36,16 +39,37 @@ class BooksSeeder extends Seeder
         });
         Writer::insert($writers->toArray());
         $writers = Writer::all(['id', 'name']);
+        if($writers->count() < 30){
+            Writer::factory(30 - $writers->count())->create();
+            $writers = Writer::all(['id', 'name']);
+        }
 
         // Insert Books
         
+        $books = $booksData->map(function($book) use($publishers, $writers){
+            if($book['publisher']){
+                $book['publisher_id'] = $publishers->where('name', $book['publisher'])->first()->id;
+                unset($book['publisher']);
+            }
+            if($book['writer']){
+                // $book['writer_id'] = $writers->where('name', $book['writer']);
+                unset($book['writer']);
+            }
+            if($book['published_at']){
+                $book['published_at'] = Carbon::parse($book['published_at'])->format('Y-m-d');
+            }
+            $book = array_filter($book, 'strlen');
+            return Book::factory()->make($book)->getAttributes();
+        });
 
-        dd($writers);
-    }
+        Book::insert($books->toArray());
+        
+        $books = Book::all();
+        $books->each(function($book) use($writers){
+            $book->writers()->sync(rand(1, $writers->count()));
+            $book->authors()->syncWithPivotValues(rand(1, $writers->count()), ['translator' => true], false);
+        });
 
-    protected function getCovers()
-    {
-        return Storage::allFiles('covers');
     }
 
     public function books() : array

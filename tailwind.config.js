@@ -1,5 +1,5 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require('tailwindcss/colors');
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   mode: "jit",
@@ -19,12 +19,12 @@ module.exports = {
       colors: {
         primary: colors.amber,
         gray: {
-          default: '#2C1810'
-        }
+          default: "#2C1810",
+        },
       },
       zIndex: {
-        '-10': '-10',
-      }
+        "-10": "-10",
+      },
     },
     container: {
       center: true,
@@ -42,5 +42,8 @@ module.exports = {
     },
   },
 
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 };

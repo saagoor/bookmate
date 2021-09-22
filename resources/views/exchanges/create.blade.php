@@ -10,7 +10,8 @@ $books = App\Models\Book::with('authors')
             <h1 class="mb-4 text-3xl font-semibold md:mb-6">{{ $title }}</h1>
 
             <form action="{{ route('exchanges.store') }}"
-                method="POST">
+                method="POST"
+                enctype="multipart/form-data">
                 @csrf
 
                 <x-input-searchable-select class="mb-3"
@@ -41,11 +42,16 @@ $books = App\Models\Book::with('authors')
                     placeholder="(Optional) Writer a short description......."
                     label="Description">{{ old('description') }}</x-input-textarea>
 
-                <x-input-image class="mb-3"
-                    type="file"
-                    name="previews[]"
-                    button-label="Select Previews"
-                    multiple>Picture Previews</x-input-image>
+                <div class="mb-3">
+                    <x-input-image type="file"
+                        name="previews[]"
+                        button-label="Select Previews"
+                        multiple>Picture Previews</x-input-image>
+
+                    @error('previews')
+                        <p class="mt-0.5 text-sm font-semibold text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
 
                 <x-button class="text-base">Post Request</x-button>
             </form>

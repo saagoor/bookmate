@@ -23,29 +23,102 @@
                         </x-button>
                     </x-slot>
 
-                    <div class="max-w-xs">
-                        <p class="text-muted">Invite your friends to join this book reading challange.</p>
-                        <form action="">
-                            <x-input-text name="email" placeholder="mhsagor91@gmail.com">Email Address</x-input-te>
+                    <div class="max-w-xs"
+                        x-data="{
+                        users: [],
+                        inviting: '',
+                        invited: [],
+                        search: '',
+                        submit(){
+                            this.users = [];
+                            if(!this.search){
+                                return;
+                            }
+                            axios.get('{{ route('users.index') }}', {
+                                params: {search: this.search},
+                            })
+                            .then(({data}) => {
+                                this.users = data.data;
+                                console.log(data.data);
+                            })
+                            .catch((error) => {
+                                alert(error);
+                            });
+                        },
+                        sendInvitation(email){
+                            if(this.invited.includes(email)){
+                                this.inviting = '';
+                                return;
+                            }
+                            this.inviting = email;
+                            axios.post('{{ route('challanges.invite', $challange) }}', {email: email})
+                            .then((response) => {
+                                this.invited.push(email);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                alert(error);
+                            })
+                            .then(() => {
+                                this.inviting = '';
+                            });
+                        }
+                    }">
+                        <p class="mb-3 leading-tight text-gray-500">Invite your friends to join this book reading challange.</p>
+                        <form action="{{ route('users.index') }}">
+                            <x-input-text x-model="search"
+                                name="search"
+                                @input.debounce.500="submit()"
+                                placeholder="mhsagor91@gmail.com">Name or Email</x-input-text>
 
-                            <template>
+                            <template x-if="users && users.length > 0">
                                 <div
                                     class="max-w-xs py-2 overflow-y-auto bg-white border border-gray-100 rounded-lg shadow-lg max-h-60">
-                                    <template>
-                                        {{-- <x-user-list-tile
-                                class="hover:bg-cool-gray-100 cursor-pointer {{ $loop->last ? 'border-gray-50' : '' }}"
-                                :user="$item"
-                                wire:click="setEmail('{{ $item->email }}')"
-                            /> --}}
+
+                                    <template x-for="user in users"
+                                        :key="user.id">
+                                        <a href="#"
+                                            @click.prevent="sendInvitation(user.email)"
+                                            class="flex items-center gap-3 px-4 py-2 border-b border-gray-100 hover:bg-primary-100">
+                                            {{-- Shows loading while sending invitation --}}
+                                            <template x-if="inviting == user.email">
+                                                <div
+                                                    class="inline-flex flex-col items-center justify-center w-12 h-12 rounded-full bg-primary-100">
+                                                    <div
+                                                        class="w-6 h-6 border-2 border-t-0 rounded-full border-primary-400 animate-spin">
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            {{-- Shows invited after invitation sent --}}
+                                            <template x-if="invited.includes(user.email) && inviting != user.email">
+                                                <div
+                                                    class="inline-flex flex-col items-center justify-center w-12 h-12 bg-green-200 rounded-lg">
+                                                    <x-heroicon-o-check />
+                                                    <span class="text-xs">Invited</span>
+                                                </div>
+                                            </template>
+                                            {{-- Shows avatar otherwise --}}
+                                            <template x-if="!invited.includes(user.email) && inviting != user.email">
+                                                <img x-bind:src="user.image_url"
+                                                    class="w-12 h-12 rounded-full bg-primary-100">
+                                            </template>
+
+                                            <div class="text-muted">
+                                                <p class="font-bold leading-tight"
+                                                    x-text="user.name"></p>
+                                                <p class="text-sm leading-tight"
+                                                    x-text="user.email"></p>
+                                            </div>
+                                        </a>
                                     </template>
                                 </div>
                             </template>
                         </form>
                     </div>
 
-                    <x-slot name="footer">
+                    {{-- <x-slot name="footer">
                         <x-button>Send Invitation</x-button>
-                    </x-slot>
+                    </x-slot> --}}
 
                 </x-right-sheet>
             </div>
@@ -204,7 +277,7 @@
                             </td>
                             <td class="px-2 py-1 border-b">{{ $participant->pivot->percentage }}%</td>
                             <td class="px-2 py-1 border-b">
-                                {{ $participant->pivot->created_at->diffInDays(now()) ?? '?' }}
+                                {{ $participant->pivot->created_at->diffInDays($participant->pivot->updated_at) ?? '?' }}
                             </td>
                         </tr>
                     @empty

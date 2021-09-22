@@ -26,7 +26,7 @@ class ChallangeFactory extends Factory
         return [
             'user_id'   => User::inRandomOrder()->first(),
             'book_id'   => Book::inRandomOrder()->first(),
-            'finish_at' => now()->addDays(rand(20, 50)),
+            'finish_at' => now()->addDays(rand(20, 50))->addMinutes(rand(10, 100))->addSeconds(1, 50),
         ];
     }
 }

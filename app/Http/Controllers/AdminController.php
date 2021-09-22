@@ -19,33 +19,33 @@ class AdminController extends Controller
 
     public function books()
     {
-        $books = $this->search(Book::class)->paginate();
+        $books = Book::search()->paginate();
         $books->load(['writers', 'translators', 'publisher']);
         return view('admin.books', compact('books'));
     }
 
     public function writers()
     {
-        $writers = $this->search(Writer::class)->paginate();
+        $writers = Writer::search()->paginate();
         return view('admin.writers', compact('writers'));
     }
 
     public function publishers()
     {
-        $publishers = $this->search(Publisher::class)->paginate();
+        $publishers = Publisher::search()->paginate();
         return view('admin.publishers', compact('publishers'));
     }
 
     public function exchanges()
     {
-        $exchanges = $this->search(Exchange::class)->paginate();
+        $exchanges = Exchange::search()->paginate();
         $exchanges->load(['book', 'expected_book', 'user'])->loadCount('offers');
         return view('admin.exchanges', compact('exchanges'));
     }
 
     public function users()
     {
-        $users = $this->search(User::class)->paginate();
+        $users = User::search()->paginate();
         return view('admin.users', compact('users'));
     }
 

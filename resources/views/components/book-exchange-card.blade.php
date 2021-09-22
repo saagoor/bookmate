@@ -1,5 +1,12 @@
 @props(['exchange'])
-<div class="overflow-hidden text-sm rounded-md shadow bg-primary-50 group">
+<div class="relative overflow-hidden text-sm rounded-md shadow bg-primary-50">
+
+    @if ($exchange->accepted_offer_id)
+        <div class="absolute top-0 right-0 px-4 py-2 text-xs font-semibold bg-primary-200 text-primary-900">
+            Exchanged
+        </div>
+    @endif
+
     <div class="flex">
         <div class="w-1/5">
             <a href="{{ route('exchanges.show', $exchange) }}">

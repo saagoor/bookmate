@@ -2,18 +2,29 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class Challange extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+
+    protected $guarded = [];
 
     protected $dates = ['finish_at'];
 
+    public static $searchables = [
+        'book:name,isbn,category',
+        'user:name,email',
+        'book.writers:name',
+        'book.translators:name',
+    ];
+
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class)->withDefault();
     }
 
     public function user()
@@ -28,5 +39,19 @@ class Challange extends Model
             ->withPivot(['percentage'])
             ->latest('pivot_percentage')
             ->latest('pivot_created_at');
+    }
+
+    public function addParticipant(User $user)
+    {
+        $this->participants()->syncWithoutDetaching(auth()->user());
+    }
+
+    public function invite(String $email)
+    {
+        Mail::raw('You have been invited to a book reading challange.', function ($message) use($email) {
+            $message->from(auth()->user()->email, auth()->user()->name);
+            $message->to($email, User::whereEmail($email)->first()->name ?? '');
+            $message->subject('Challange Invitation');
+        });
     }
 }
