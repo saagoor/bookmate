@@ -14,6 +14,7 @@ class Challange extends Model
     protected $guarded = [];
 
     protected $dates = ['finish_at'];
+    protected $withCount = ['participants'];
 
     public static $searchables = [
         'book:name,isbn,category',
@@ -24,13 +25,14 @@ class Challange extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class)->withDefault();
+        return $this->belongsTo(Book::class)->withAvg('reviews', 'rating')->withDefault();
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    
 
     public function participants()
     {
@@ -48,7 +50,8 @@ class Challange extends Model
 
     public function invite(String $email)
     {
-        Mail::raw('You have been invited to a book reading challange.', function ($message) use($email) {
+        $link = route('challanges.show', $this->id);
+        Mail::raw("You have been invited to a book reading challange. \n\n{$link}", function ($message) use($email) {
             $message->from(auth()->user()->email, auth()->user()->name);
             $message->to($email, User::whereEmail($email)->first()->name ?? '');
             $message->subject('Challange Invitation');
