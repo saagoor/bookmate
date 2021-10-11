@@ -17,11 +17,13 @@ class CreateExchangesTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('book_id');
+            $table->integer('book_worth');
             $table->foreignId('expected_book_id')->nullable();
             $table->boolean('accepted_offer_id')->nullable();
             $table->enum('book_condition', ['average', 'good', 'fresh', 'full_fresh']);
             $table->string('book_edition')->nullable();
             $table->text('description')->nullable();
+            $table->string('pickup_location')->nullable();
             $table->timestamps();
         });
 
@@ -30,6 +32,7 @@ class CreateExchangesTable extends Migration
             $table->foreignId('exchange_id');
             $table->foreignId('user_id');
             $table->foreignId('offered_book_id');
+            $table->integer('book_worth');
             $table->enum('book_condition', ['average', 'good', 'fresh', 'full_fresh']);
             $table->string('book_edition')->nullable();
             $table->timestamps();

@@ -33,9 +33,13 @@
 
                 <hr>
 
-                <x-sidebar-nav-link icon="heroicon-o-hand"
+                <x-sidebar-nav-link icon="heroicon-s-hand"
                     :href="route('admin.exchanges')"
                     :active="request()->routeIs('admin.exchanges')">Exchanges</x-sidebar-nav-link>
+
+                <x-sidebar-nav-link icon="heroicon-s-users"
+                    :href="route('admin.challanges')"
+                    :active="request()->routeIs('admin.challanges')">Challanges</x-sidebar-nav-link>
 
                 <hr>
 

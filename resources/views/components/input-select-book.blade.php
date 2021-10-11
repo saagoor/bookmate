@@ -1,9 +1,14 @@
-@props([
-    'books' => App\Models\Book::with('authors')->latest('name')->get(['id', 'name', 'cover']),
-    'name'  => 'book_id',
-])
+@props(['books', 'name' => 'book_id'])
+
 
 @php
+
+if (!isset($books)) {
+    $books = App\Models\Book::with('authors')
+        ->without(['writers', 'translators'])
+        ->get();
+}
+
 $books = $books->map(function ($book) {
     $book->writer = $book->authors->pluck('name')->implode(', ');
     return $book;

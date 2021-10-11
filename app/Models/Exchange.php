@@ -11,6 +11,8 @@ class Exchange extends Model
     use HasFactory, Searchable;
 
     protected $guarded = [];
+
+    protected $withCount = ['offers'];
     
     public static $searchables = [
         'book_condition',
@@ -22,7 +24,7 @@ class Exchange extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class)->withAvg('reviews', 'rating');
     }
 
     public function user()
@@ -32,7 +34,7 @@ class Exchange extends Model
 
     public function expected_book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class)->withAvg('reviews', 'rating');
     }
 
     public function offers()

@@ -77,16 +77,25 @@ $book = $exchange->book;
                             @endphp
                             <div class="px-4 py-4 mb-6 bg-primary-300 sm:px-6 card">
                                 <p class="mb-3 text-2xl font-bold">{{ $exchange->offers_count }} Offer Received</p>
+                                {{-- Show offer viewer right sheet --}}
                                 <x-exchange-offers :exchange="$exchange"
                                     button-class="" />
                             </div>
                         @else
                             @if ($exchange->current_user_sent_offer)
-                                <p class="p-4 mb-6 text-lg font-semibold bg-green-100 rounded-md shadow">
+                                <div class="flex items-center gap-3 p-4 mb-6 bg-green-100 rounded-md shadow">
                                     <x-heroicon-s-check
                                         class="w-8 h-8 mr-2 border-2 rounded-full -mt-1.5 text-green-500 border-green-200" />
-                                    You have sent an exchange offer.
-                                </p>
+                                        
+                                    <p class="text-lg font-semibold leading-tight">
+                                        You have sent an exchange offer.
+                                    </p>
+
+                                    <x-link-button class="flex-1 py-3 text-base sm:text-lg"
+                                        href="#conversation">
+                                        <x-heroicon-o-chat class="-mt-0.5" />
+                                    </x-link-button>
+                                </div>
                             @endif
                             @if (!$exchange->accepted_offer_id)
                                 <div class="flex flex-col gap-3 mb-6 sm:flex-row">
@@ -101,6 +110,7 @@ $book = $exchange->book;
                                                 Send Offer
                                             </x-button>
                                             <x-modal-form :action="route('exchanges.offers.store', $exchange)"
+                                                title="Send an Offer"
                                                 submit-text="Send Your Offer">
 
                                                 <x-input-select-book class="mb-3"
@@ -122,12 +132,21 @@ $book = $exchange->book;
                                     </x-link-button>
                                 </div>
                             @elseif ($exchange->accepted_offer->user_id == auth()->user()->id)
-                                <div class="p-4 mb-6 leading-tight bg-green-100 rounded-md shadow">
-                                    <p>You offered to exchange with
+                                <div class="p-4 mb-6 text-xl font-semibold leading-tight bg-green-100 rounded-md shadow">
+                                    <p class="mb-4">You offered to exchange with
                                         <span
                                             class="font-semibold">{{ $exchange->accepted_offer->offered_book->name ?? '' }}.</span>
                                     </p>
-                                    <p>And {{ $exchange->user->name }} has accepted your exchange offer.</p>
+
+                                    <p class="mb-4">And guess what......!</p>
+
+                                    <div class="flex items-center gap-3">
+                                        <x-heroicon-s-check
+                                            class="text-green-500 border-4 border-green-400 rounded-full w-14 h-14" />
+                                        <p class="flex-1">{{ $exchange->user->name }} has accepted your exchange
+                                            offer.</p>
+                                    </div>
+
                                 </div>
                             @endif
                         @endif
@@ -270,7 +289,7 @@ $book = $exchange->book;
                 <div class="flex flex-wrap gap-4">
                     <template x-for="(item, index) in items"
                         :key="index">
-                        <img x-on:click="show = true"
+                        <img x-on:click="currentIndex = index; show = true;"
                             class="w-32 cursor-pointer"
                             :data-src="item"
                             alt="Book Title">
@@ -282,11 +301,14 @@ $book = $exchange->book;
                             :src="items[currentIndex]">
                     </div>
                     <div class="flex justify-between px-4 py-3 bg-gray-50 sm:px-6">
-                        <x-button type="button" @click="prev()">
+                        <x-button type="button"
+                            @click="prev()">
                             <x-heroicon-o-arrow-left class="h-4 mr-1" /> Prev
                         </x-button>
-                        <x-button type="button" @click="next()">
-                            Next <x-heroicon-o-arrow-right class="h-4 ml-1" />
+                        <x-button type="button"
+                            @click="next()">
+                            Next
+                            <x-heroicon-o-arrow-right class="h-4 ml-1" />
                         </x-button>
                     </div>
                 </x-modal>

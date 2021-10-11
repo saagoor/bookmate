@@ -64,6 +64,10 @@
                                     </x-dropdown-link>
                                 @endif
 
+                                <x-dropdown-link :href="route('dashboard.index')">
+                                    {{ __('Dashboard') }}
+                                </x-dropdown-link>
+
                                 <!-- Authentication -->
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf

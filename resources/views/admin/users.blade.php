@@ -7,7 +7,8 @@
                 <th class="px-2 py-1 font-semibold text-left border">Avatar</th>
                 <th class="px-2 py-1 font-semibold text-left border">Name</th>
                 <th class="px-2 py-1 font-semibold text-left border">Email</th>
-                <th class="px-2 py-1 font-semibold text-left border">Registered</th>
+                <th class="px-2 py-1 font-semibold text-left border">Balance</th>
+                <th class="px-2 py-1 font-semibold text-left border">Registered At</th>
                 <th class="px-2 py-1 font-semibold text-right border">Actions</th>
             </tr>
 
@@ -19,6 +20,7 @@
                     </td>
                     <td class="px-2 py-1 border">{{ $user->name }}</td>
                     <td class="px-2 py-1 border">{{ $user->email }}</td>
+                    <td class="px-2 py-1 border">{{ $user->balance }}</td>
                     <td class="px-2 py-1 border">{{ $user->created_at->diffForHumans() }}</td>
                     <td class="px-2 py-1 border">
                         <x-admin-actions

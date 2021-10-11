@@ -9,7 +9,7 @@ trait Searchable
 
     public static function search(string $orderBy = null, bool $latest = true)
     {
-        $fields = self::$searchables ?? [];
+        $fields = self::$searchables;
 
         $withs = array_map(function ($field) {
             return Str::before($field, ':');
@@ -26,7 +26,7 @@ trait Searchable
                     $relation = Str::before($field, ':');
                     $columns = explode(',', Str::after($field, ':'));
 
-                    $query = $query->orWhereHas($relation, function($query) use ($columns, $search){
+                    $query = $query->orWhereRelation($relation, function($query) use ($columns, $search){
 
                         foreach ($columns as $i => $column) {
                             if($i == 0){
@@ -37,6 +37,7 @@ trait Searchable
                         }
 
                     });
+
 
                 }else{
                     $query = $query->orWhere($field, 'like', "%$search%");

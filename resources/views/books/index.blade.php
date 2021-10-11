@@ -21,7 +21,7 @@ $title = 'Books';
 
         <div class="grid grid-cols-2 gap-6 md:gap-8 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6">
             @forelse ($books as $book)
-                <x-book :book="$book" />
+                <x-book-card :book="$book" />
             @empty
                 <div>
                     <p class="text-xl">Ooops!</p>

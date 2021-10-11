@@ -18,6 +18,8 @@ class Writer extends Model
     public static $searchables = [
         'name',
         'email',
+        'location',
+        'date_of_birth',
         'books:name,isbn,category',
     ];
 
@@ -34,6 +36,6 @@ class Writer extends Model
 
     public function books()
     {
-        return $this->belongsToMany(Book::class, 'books_authors');
+        return $this->belongsToMany(Book::class, 'books_authors')->withAvg('reviews', 'rating');
     }
 }

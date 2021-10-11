@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Book;
 use App\Models\Publisher;
+use App\Models\Review;
 use App\Models\Writer;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -68,6 +69,7 @@ class BooksSeeder extends Seeder
         $books->each(function($book) use($writers){
             $book->writers()->sync(rand(1, $writers->count()));
             $book->authors()->syncWithPivotValues(rand(1, $writers->count()), ['translator' => true], false);
+            $book->reviews()->saveMany(Review::factory(rand(2, 4))->make());
         });
 
     }

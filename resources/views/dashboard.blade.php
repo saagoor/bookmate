@@ -3,7 +3,9 @@
     <div class="container relative">
         <div class="flex">
             <div class="relative self-center flex-1 py-10">
-                <h1 class="mb-6 text-2xl font-black lg:mb-10 sm:text-4xl lg:text-7xl">Fill your head with knowledge of books!</h1>
+                <h1 class="mb-6 text-2xl font-black !leading-tight lg:mb-10 sm:text-4xl lg:text-7xl">
+                    Get <span class="text-primary-500">New Book</span> <br> in Exchange of <br> Your <span class="text-red-400">Old Book</span>
+                </h1>
 
                 <x-link-button class="px-6 py-3 text-lg" :href="route('exchanges.index')">
                     Exchange Books

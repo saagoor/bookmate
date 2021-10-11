@@ -13,7 +13,7 @@ class UserController extends Controller
         $request->validate([
             'search' => 'required',
         ]);
-        $users = $this->search(User::class)->paginate(10);
+        $users = User::search()->paginate(10);
 
         if($request->has('search') && auth()->check()){
             $users->forget(auth()->user()->id);

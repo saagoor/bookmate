@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Traits\Searchable;
 
 class Book extends Model
 {
@@ -14,8 +14,16 @@ class Book extends Model
     protected $dates = ['published_at'];
     protected $guarded = [];
     protected $appends = ['cover_url'];
+    protected $with = ['writers', 'translators'];
+    protected $withCount = ['reviews', 'exchanges', 'challanges'];
 
-    public static $searcables = ['name', 'isbn', 'publisher:name', 'writers:name', 'translators:name'];
+    public static $searchables = [
+        'name', 
+        'isbn',
+        'category',
+        'publisher:name,email', 
+        'authors:name,email',
+    ];
 
     public static $categories = [
         "Fantasy",
@@ -77,5 +85,15 @@ class Book extends Model
     public function reviews()
     {
        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function exchanges()
+    {
+        return $this->hasMany(Exchange::class);
+    }
+
+    public function challanges()
+    {
+        return $this->hasMany(Challange::class);
     }
 }

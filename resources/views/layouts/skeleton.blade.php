@@ -25,14 +25,14 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    
     @env(['local', 'production'])
     <!-- Alpine Plugins -->
     {{-- <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script> --}}
     <!-- Alpine Core -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @endenv
-
-    <script src="{{ asset('js/app.js') }}" defer></script>
     
     @bukStyles
 

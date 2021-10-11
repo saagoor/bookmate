@@ -1902,8 +1902,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_bootstrap__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _lazy_load_images__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./_lazy_load_images */ "./resources/js/_lazy_load_images.js");
 /* harmony import */ var _lazy_load_images__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_lazy_load_images__WEBPACK_IMPORTED_MODULE_1__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
+
+document.addEventListener("alpine:init", function () {
+  Alpine.data("bookPriceFetcher", function () {
+    return {
+      loading: false,
+      loaded: false,
+      trigger: _defineProperty({}, "x-on:optionSelected", function xOnOptionSelected() {
+        var book = this.$event.detail;
+        this.$dispatch('bookSelected', book);
+        this.getPrice(book.id);
+      }),
+      getPrice: function getPrice(bookId) {
+        var _this = this;
+
+        this.loading = true;
+        axios.post("/admin/books/".concat(bookId, "/price")).then(function (response) {
+          _this.$refs.price.innerText = response.data;
+          _this.loading = false;
+          _this.loaded = true;
+        })["catch"](function (error) {
+          alert(error.message);
+          _this.loading = false;
+        });
+      }
+    };
+  });
+});
 
 /***/ }),
 

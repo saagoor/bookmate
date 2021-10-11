@@ -14,6 +14,7 @@ class BookController extends Controller
         $books = Book::search()
             ->withAvg('reviews', 'rating')
             ->paginate(12);
+            
         return view('books.index', compact('books'));
     }
 

@@ -20,7 +20,7 @@
                 </div>
                 <div class="flex-1 mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     @if ($title)
-                        <h3 class="text-lg font-medium leading-6 text-gray-900"
+                        <h3 class="text-lg font-semibold leading-6 text-gray-900 sm:text-xl"
                             id="modal-title">
                             {{ $title }}
                         </h3>

@@ -1,9 +1,9 @@
 @props([
-'name' => '',
-'value' => old($name),
-'roundedImage' => true,
-'options' => App\Models\Writer::all(['id', 'name', 'image', 'email']),
-'properties' => []
+    'name' => '',
+    'value' => old($name),
+    'roundedImage' => true,
+    'options',
+    'properties' => [],
 ])
 
 @php
@@ -41,7 +41,7 @@ $properties = (object) array_merge(
                     @click="toggle()"
                     class="absolute w-6 h-6 text-gray-600 transform -translate-y-1/2 outline-none cursor-pointer top-1/2 right-1.5">
                     <x-heroicon-o-chevron-down x-show="!show" />
-                    <x-heroicon-o-chevron-up x-show="show" />
+                    <x-heroicon-o-chevron-up x-show="show" x-cloak />
                 </button>
             </div>
         </div>
@@ -168,6 +168,7 @@ $properties = (object) array_merge(
                     this.focusedOptionIndex = this.focusedOptionIndex ?? 0;
                     this.selected = this.getResults()[this.focusedOptionIndex];
                     this.close();
+                    this.$dispatch('optionSelected', this.selected);
                 },
                 focusPrevOption() {
                     const lastIndex = this.getResults().length - 1;

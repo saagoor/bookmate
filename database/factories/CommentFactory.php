@@ -2,18 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Review;
+use App\Models\Comment;
+use App\Models\Discussion;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ReviewFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Review::class;
+    protected $model = Comment::class;
 
     /**
      * Define the model's default state.
@@ -23,9 +24,9 @@ class ReviewFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'   => User::inRandomOrder()->first()->id,
-            'text'      => $this->faker->sentences(3, true),
-            'rating'    => rand(1, 5),
+            'user_id'   => User::inRandomOrder()->first(),
+            'discussion_id' => Discussion::inRandomOrder()->first(),
+            'text'  => $this->faker->realText(),
         ];
     }
 }

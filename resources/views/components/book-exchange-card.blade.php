@@ -1,9 +1,29 @@
 @props(['exchange'])
+
+@php
+$label = '';
+
+if ($exchange->accepted_offer_id) {
+    if (auth()->check() && $exchange->accepted_offer->user_id == auth()->user()->id) {
+        $label = 'Exchanged with you';
+    } elseif ($exchange->user_id == auth()->user()->id) {
+        $label = 'Exchanged';
+    } else {
+        $label = 'Not Available';
+    }
+} elseif ($exchange->current_user_sent_offer) {
+    $label = 'Offer Sent';
+} else {
+    $label = $exchange->offers_count . ' Offers';
+}
+
+@endphp
+
 <div class="relative overflow-hidden text-sm rounded-md shadow bg-primary-50">
 
-    @if ($exchange->accepted_offer_id)
-        <div class="absolute top-0 right-0 px-4 py-2 text-xs font-semibold bg-primary-200 text-primary-900">
-            Exchanged
+    @if ($label)
+        <div class="absolute top-0 right-0 px-4 py-2 text-xs font-semibold text-gray-900 bg-blue-200">
+            {{ $label }}
         </div>
     @endif
 
@@ -18,7 +38,8 @@
         <div class="flex flex-col justify-between flex-1">
             <div class="p-4 my-auto">
                 <h3 class="mb-1 text-base font-semibold md:text-lg">
-                    <a title="View the book" href="{{ route('books.show', $exchange->book_id) }}">{{ $exchange->book->name }}</a>
+                    <a title="View the book"
+                        href="{{ route('books.show', $exchange->book_id) }}">{{ $exchange->book->name }}</a>
                 </h3>
                 <table>
                     <tr>
@@ -72,11 +93,7 @@
                 <div class="flex-1 px-4 py-2 border-r">
                     <p class="text-sm opacity-70">Book Rating</p>
                     <p>
-                        <x-heroicon-s-star />
-                        <x-heroicon-s-star />
-                        <x-heroicon-s-star />
-                        <x-heroicon-s-star />
-                        <x-heroicon-o-star />
+                        <x-ratings :rating="$exchange->book->reviews_avg_rating" />
                     </p>
                 </div>
                 <div class="flex-1">

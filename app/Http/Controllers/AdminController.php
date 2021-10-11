@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Challange;
 use App\Models\Exchange;
 use App\Models\Publisher;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    
+
     public function dashboard()
     {
         return view('admin.dashboard');
@@ -19,8 +20,10 @@ class AdminController extends Controller
 
     public function books()
     {
-        $books = Book::search()->paginate();
-        $books->load(['writers', 'translators', 'publisher']);
+        $books = Book::search()
+            ->withAvg('reviews', 'rating')
+            ->paginate();
+
         return view('admin.books', compact('books'));
     }
 
@@ -38,9 +41,18 @@ class AdminController extends Controller
 
     public function exchanges()
     {
-        $exchanges = Exchange::search()->paginate();
-        $exchanges->load(['book', 'expected_book', 'user'])->loadCount('offers');
+        $exchanges = Exchange::search()
+            ->with(['book', 'expected_book', 'user'])
+            ->paginate();
         return view('admin.exchanges', compact('exchanges'));
+    }
+
+    public function challanges()
+    {
+        $challanges = Challange::search()
+            ->with(['book'])
+            ->paginate();
+        return view('admin.challanges', compact('challanges'));
     }
 
     public function users()
@@ -48,5 +60,4 @@ class AdminController extends Controller
         $users = User::search()->paginate();
         return view('admin.users', compact('users'));
     }
-
 }

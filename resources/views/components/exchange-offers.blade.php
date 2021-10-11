@@ -23,7 +23,7 @@
             <x-button :class="$buttonClass"
                 x-on:click="getContents()">{{ $buttonLabel }}</x-button>
         </x-slot>
-        <div class="max-w-lg">
+        <div class="max-w-lg w-80">
             <div x-ref="sheetContents">
                 <div class="text-center">
                     <x-heroicon-o-refresh class="w-10 h-10 animate-spin" />
