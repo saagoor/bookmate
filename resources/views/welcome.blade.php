@@ -1,4 +1,4 @@
-<x-skeleton>
+<x-skeleton> 
     <header class="min-h-screen">
         <div class="container">
             <div class="flex items-center justify-between">
