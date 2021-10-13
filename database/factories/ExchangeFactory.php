@@ -28,6 +28,7 @@ class ExchangeFactory extends Factory
             'book_id'   => Book::inRandomOrder()->first(),
             'expected_book_id'   => Book::inRandomOrder()->first(),
             'book_condition'    => $this->faker->randomElement(['average', 'good', 'fresh', 'full_fresh']),
+            'book_worth'    => rand(1, 5) * 100,
             'description'   => $this->faker->paragraphs(5, true),
         ];
     }

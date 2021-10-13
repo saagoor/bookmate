@@ -17,9 +17,9 @@ class CreateExchangesTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('book_id');
-            $table->integer('book_worth');
             $table->foreignId('expected_book_id')->nullable();
             $table->boolean('accepted_offer_id')->nullable();
+            $table->integer('book_worth');
             $table->enum('book_condition', ['average', 'good', 'fresh', 'full_fresh']);
             $table->string('book_edition')->nullable();
             $table->text('description')->nullable();

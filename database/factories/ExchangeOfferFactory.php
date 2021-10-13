@@ -28,6 +28,7 @@ class ExchangeOfferFactory extends Factory
             'exchange_id'   => Exchange::inRandomOrder()->first(),
             'user_id'   => User::inRandomOrder()->first(),
             'offered_book_id'   => Book::inRandomOrder()->first(),
+            'book_worth'    => rand(1, 5) * 100,
         ];
     }
 }
