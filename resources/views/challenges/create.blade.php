@@ -1,5 +1,5 @@
 @php
-    $title = "Post a Book Reading Challange"
+    $title = "Post a Book Reading Challenge"
 @endphp
 <x-app-layout :title="$title">
     
@@ -8,13 +8,13 @@
         <h1 class="mb-4 text-xl font-semibold sm:text-2xl">{{ $title }}</h1>
 
         <div class="">
-            <form action="{{ route('challanges.store') }}" method="POST">
+            <form action="{{ route('challenges.store') }}" method="POST">
                 @csrf
 
                 <x-input-select-book class="mb-3">Book</x-input-select-book>
 
                 <div class="mt-3 mb-3">
-                    <x-label>Challange Finish Date</x-label>
+                    <x-label>Challenge Finish Date</x-label>
                     <x-pikaday name="finish_at"
                         type="date"
                         format="DD MMMM YYYY"
@@ -27,7 +27,7 @@
                     @enderror
                 </div>
 
-                <x-button>Post Challange</x-button>
+                <x-button>Post Challenge</x-button>
 
             </form>
         </div>

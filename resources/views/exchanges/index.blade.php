@@ -14,10 +14,15 @@ $title = 'Books Available for Exchange';
 
     <div class="container max-w-3xl py-6 md:py-10">
 
+        <p class="text-lg font-semibold mb-3">
+            <a href="{{ route('ebooks.index') }}">Exchange eBooks <x-heroicon-o-arrow-right /></a>
+        </p>
+
         <div class="flex justify-between">
-            <h1 class="mb-4 text-3xl font-semibold md:mb-6">{{ $title }}</h1>
+            <h1 class="text-3xl font-semibold md:mb-6">{{ $title }}</h1>
             <x-form-search />
         </div>
+
 
         <div class="grid gap-6">
             @forelse ($exchanges as $exchange)

@@ -26,6 +26,20 @@ class CreateBooksTable extends Migration
             $table->text('summary')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('books_reads', function (Blueprint $table){
+            $table->id();
+            $table->foreignId('book_id')
+                ->references('id')
+                ->on('books')
+                ->cascadeOnDelete();
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
+            $table->timestamps();
+            $table->unique(['book_id', 'user_id']);
+        });
     }
 
     /**

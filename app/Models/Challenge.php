@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Mail;
 
-class Challange extends Model
+class Challenge extends Model
 {
     use HasFactory, Searchable;
 
     protected $guarded = [];
 
     protected $dates = ['finish_at'];
-    protected $withCount = ['participants'];
+    protected $withCount = ['participants', 'finishers'];
 
     public static $searchables = [
         'book:name,isbn,category',
@@ -22,6 +22,13 @@ class Challange extends Model
         'book.writers:name',
         'book.translators:name',
     ];
+
+    protected static function booted()
+    {
+        static::created(function ($challange) {
+            $challange->discussion()->create();
+        });
+    }
 
     public function book()
     {
@@ -32,15 +39,22 @@ class Challange extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
+    public function discussion(){
+        return $this->morphOne(Discussion::class, 'discussable');
+    }
 
     public function participants()
     {
-        return $this->belongsToMany(User::class, 'challanges_participants')
+        return $this->belongsToMany(User::class, 'challenges_participants')
             ->withTimestamps()
             ->withPivot(['percentage'])
             ->latest('pivot_percentage')
             ->latest('pivot_created_at');
+    }
+
+    public function finishers(){
+        return $this->participants()->wherePivot('percentage', 100);
     }
 
     public function addParticipant(User $user)
@@ -50,11 +64,11 @@ class Challange extends Model
 
     public function invite(String $email)
     {
-        $link = route('challanges.show', $this->id);
-        Mail::raw("You have been invited to a book reading challange. \n\n{$link}", function ($message) use($email) {
+        $link = route('challenges.show', $this->id);
+        Mail::raw("You have been invited to a book reading challenge. \n\n{$link}", function ($message) use($email) {
             $message->from(auth()->user()->email, auth()->user()->name);
             $message->to($email, User::whereEmail($email)->first()->name ?? '');
-            $message->subject('Challange Invitation');
+            $message->subject('Challenge Invitation');
         });
     }
 }

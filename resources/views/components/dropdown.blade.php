@@ -1,6 +1,7 @@
-@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white'])
+@props(['align' => 'right', 'width' => 'w-48', 'contentClasses' => 'py-1 bg-white'])
 
 @php
+
 switch ($align) {
     case 'left':
         $alignmentClasses = 'origin-top-left left-0';
@@ -14,11 +15,6 @@ switch ($align) {
         break;
 }
 
-switch ($width) {
-    case '48':
-        $width = 'w-48';
-        break;
-}
 @endphp
 
 <div class="relative" x-data="{ open: false }" @click.away="open = false" @close.stop="open = false">

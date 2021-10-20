@@ -24,12 +24,28 @@ class ExchangeFactory extends Factory
     public function definition()
     {
         return [
+            'exchange_id'   => $this->faker->randomElement([
+                null,
+                optional(Exchange::whereNull('exchange_id')->inRandomOrder()->first())->id
+            ]),
             'user_id'   => User::inRandomOrder()->first(),
             'book_id'   => Book::inRandomOrder()->first(),
             'expected_book_id'   => Book::inRandomOrder()->first(),
-            'book_condition'    => $this->faker->randomElement(['average', 'good', 'fresh', 'full_fresh']),
-            'book_worth'    => rand(1, 5) * 100,
-            'description'   => $this->faker->paragraphs(5, true),
+            'book_edition'  => rand(1, 7),
+            'book_print'    => $this->faker->randomElement(['original', 'nilkhet', 'news']),
+            'book_age'  => rand(0.1, 5) * 10,
+            'markings_percentage'   => rand(1, 5) * 5,
+            'markings_density'   => rand(1, 5) * 5,
+            'missing_pages' => rand(1, 5),
+            'description'   => $this->faker->paragraph(10),
+            'pickup_location'   => rand(1, 5),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterMaking(function (Exchange $exchange){
+            $exchange->book_worth = $exchange->calculateBookWorth(rand(1, 4) * 100);
+        });
     }
 }

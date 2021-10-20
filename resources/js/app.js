@@ -1,30 +1,18 @@
 import "./bootstrap";
 import "./_lazy_load_images";
+import './components/bookPriceFetcher'
+import './components/conversation'
+import discussion from "./components/discussion";
 
 document.addEventListener("alpine:init", () => {
-  Alpine.data("bookPriceFetcher", () => ({
-    loading: false,
-    loaded: false,
-    trigger: {
-      ["x-on:optionSelected"]() {
-        let book = this.$event.detail;
-        this.$dispatch('bookSelected', book);
-        this.getPrice(book.id);
-      },
-    },
-    getPrice(bookId) {
-      this.loading = true;
-      axios
-        .post(`/admin/books/${bookId}/price`)
-        .then((response) => {
-          this.$refs.price.innerText = response.data;
-          this.loading = false;
-          this.loaded = true;
-        })
-        .catch((error) => {
-          alert(error.message);
-          this.loading = false;
-        });
-    },
-  }));
+    Alpine.data("application", () => ({
+        newMessageSound: new Audio(),
+        openConversation(user) {
+            this.$dispatch('conversation', user);
+        },
+        init() {
+            this.newMessageSound.src = '/sounds/new-message.wav';
+        }
+    }));
+    Alpine.data('discussion', discussion);
 });

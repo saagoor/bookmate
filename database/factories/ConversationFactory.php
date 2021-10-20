@@ -2,19 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Book;
-use App\Models\Challange;
+use App\Models\Conversation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ChallangeFactory extends Factory
+class ConversationFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Challange::class;
+    protected $model = Conversation::class;
 
     /**
      * Define the model's default state.
@@ -24,9 +23,8 @@ class ChallangeFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'   => User::inRandomOrder()->first(),
-            'book_id'   => Book::inRandomOrder()->first(),
-            'finish_at' => now()->addDays(rand(20, 50))->addMinutes(rand(10, 100))->addSeconds(1, 50),
+            'user_one_id'  => User::inRandomOrder()->first()->id,
+            'user_two_id'  => User::inRandomOrder()->first()->id,
         ];
     }
 }

@@ -1,3 +1,6 @@
+@php
+    $exchanges->loadCount('offers');
+@endphp
 <x-admin-layout title="Exchanges"
     :show-search="true">
 
@@ -9,7 +12,7 @@
                 <th class="px-2 py-1 font-semibold text-left border">User</th>
                 <th class="px-2 py-1 font-semibold text-left border">Book</th>
                 <th class="px-2 py-1 font-semibold text-left border">Expected Book</th>
-                <th class="px-2 py-1 font-semibold text-left border">Book Condition</th>
+                <th class="px-2 py-1 font-semibold text-left border">Book Worth</th>
                 <th class="px-2 py-1 font-semibold text-left border">Offers Received</th>
                 <th class="px-2 py-1 font-semibold text-right border">Actions</th>
             </tr>
@@ -24,12 +27,12 @@
                     </td>
                     <td class="px-2 py-1 border">
                         <a
-                            href="{{ route('admin.exchanges', ['book' => $exchange->expected_book_id]) }}">{{ $exchange->expected_book->name }}</a>
+                            href="{{ route('admin.exchanges', ['book' => $exchange->expected_book_id]) }}">{{ $exchange->expected_book->name ?? '' }}</a>
                     </td>
                     <td class="px-2 py-1 capitalize border">
-                        {{ str_replace('_', ' ', $exchange->book_condition) }}
+                        {{ str_replace('_', ' ', $exchange->book_worth) }}
                     </td>
-                    <td class="px-2 py-1 border">{{ $exchange->offers_count }}</td>
+                    <td class="px-2 py-1 border">{{ $exchange->offers_count ?? '00' }}</td>
                     <td class="px-2 py-1 border">
                         <x-admin-actions :delete="route('admin.exchanges.destroy', $exchange)"
                             class="flex-row-reverse !justify-start !gap-2">

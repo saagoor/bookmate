@@ -13,27 +13,29 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
     @endif
 
-    <!-- Fonts -->
+<!-- Fonts -->
     @env(['production', 'local'])
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    {{-- <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&display=swap" rel="stylesheet"> --}}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        {{-- <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&display=swap" rel="stylesheet"> --}}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     @endenv
 
-    <!-- Styles -->
+<!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    
+
     @env(['local', 'production'])
     <!-- Alpine Plugins -->
-    {{-- <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script> --}}
-    <!-- Alpine Core -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        {{-- <script defer src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script> --}}
+        <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+        <script defer src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+        <!-- Alpine Core -->
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @endenv
-    
+
     @bukStyles
 
     @stack('head')
@@ -41,12 +43,12 @@
 </head>
 
 <body class="relative font-sans antialiased text-gray-default bg-primary-100">
-    
-    {{ $slot }}
 
-    @bukScripts
+{{ $slot }}
 
-    @stack('footer')
+@bukScripts
+
+@stack('footer')
 </body>
 
 </html>

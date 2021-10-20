@@ -18,6 +18,7 @@
                 @endforeach
             </p>
         </div>
+        <p class="text-xs">Category: {{ $book->category }}</p>
         <div class="text-primary-500">
             <x-ratings :rating="$book->reviews_avg_rating" />
         </div>

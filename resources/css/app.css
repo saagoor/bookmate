@@ -7,6 +7,9 @@
     font-family: "Recoleta";
     src: url("../fonts/Recoleta-Regular.otf");
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     /* background-image: url('../images/books-bg-transparent.png'); */
     background-repeat: repeat;

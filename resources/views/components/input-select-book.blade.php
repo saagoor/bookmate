@@ -4,9 +4,7 @@
 @php
 
 if (!isset($books)) {
-    $books = App\Models\Book::with('authors')
-        ->without(['writers', 'translators'])
-        ->get();
+    $books = App\Models\Book::getForSelector();
 }
 
 $books = $books->map(function ($book) {

@@ -16,14 +16,17 @@ class CreateDiscussionsTable extends Migration
         Schema::create('discussions', function (Blueprint $table) {
             $table->id();
             $table->nullableMorphs('discussable');
+            $table->foreignId('user_id')->nullable();
+            $table->string('title')->nullable();
+            $table->text('body')->nullable();
             $table->timestamps();
         });
 
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('discussion_id')->nullable();
-            $table->foreignId('comment_id')->nullable();
             $table->foreignId('user_id');
+            $table->foreignId('comment_id')->nullable();
             $table->text('text');
             $table->timestamps();
         });

@@ -28,16 +28,12 @@ class BooksSeeder extends Seeder
         $writers = $booksData->pluck('writer')->unique();
 
         // Insert Publishers
-        $publishers = $publishers->map(function($pub){
-            return Publisher::factory()->make(['name' => $pub]);
-        });
+        $publishers = $publishers->map(fn($pub) => Publisher::factory()->make(['name' => $pub]));
         Publisher::insert($publishers->toArray());
         $publishers = Publisher::all(['id', 'name']);
 
         // Insert Writers
-        $writers = $writers->map(function($writer){
-            return Writer::factory()->raw(['name'   => $writer]);
-        });
+        $writers = $writers->map(fn($writer) => Writer::factory()->raw(['name'   => $writer]));
         Writer::insert($writers->toArray());
         $writers = Writer::all(['id', 'name']);
         if($writers->count() < 30){
@@ -49,7 +45,7 @@ class BooksSeeder extends Seeder
         
         $books = $booksData->map(function($book) use($publishers, $writers){
             if($book['publisher']){
-                $book['publisher_id'] = $publishers->where('name', $book['publisher'])->first()->id;
+                $book['publisher_id'] = $publishers->firstWhere('name', $book['publisher'])->id;
                 unset($book['publisher']);
             }
             if($book['writer']){

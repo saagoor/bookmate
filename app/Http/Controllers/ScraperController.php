@@ -15,9 +15,6 @@ class ScraperController extends Controller
 
     public function bookPrice(Book $book)
     {
-        return BookScraper::url('search')
-            ->params(['term' => $book->name])
-            ->get()
-            ->price();
+        return $book->getPrice();
     }
 }

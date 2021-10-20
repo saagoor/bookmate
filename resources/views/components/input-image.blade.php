@@ -58,7 +58,7 @@
             {{ __($buttonLabel) }}
         </x-button>
     </div>
-    @error($name)
+    @error(str_replace('[]', '', $name))
         <p class="mt-0.5 text-sm font-semibold text-red-600">{{ $message }}</p>
     @enderror
 </div>

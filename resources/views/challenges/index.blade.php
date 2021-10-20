@@ -1,11 +1,11 @@
 @php
-$title = 'Reading Challanges';
+$title = 'Reading Challenges';
 @endphp
 <x-app-layout :title="$title">
 
     @auth
         <x-slot name="actions">
-            <x-link-button :href="route('challanges.create')">
+            <x-link-button :href="route('challenges.create')">
                 <x-heroicon-o-plus class="mr-1" /> Create
             </x-link-button>
         </x-slot>
@@ -53,14 +53,14 @@ $title = 'Reading Challanges';
 
         <div class="flex flex-col gap-6">
 
-            @foreach ($challanges as $challange)
-                <x-challange-card :challange="$challange" />
+            @foreach ($challenges as $challenge)
+                <x-challenge-card :challenge="$challenge" />
             @endforeach
 
         </div>
 
         <div class="my-6">
-            {{ $challanges->links() }}
+            {{ $challenges->links() }}
         </div>
 
     </div>

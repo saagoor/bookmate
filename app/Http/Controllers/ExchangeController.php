@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExchangeRequest;
 use App\Models\Book;
+use App\Models\Conversation;
 use App\Models\Exchange;
-use App\Models\ExchangeOffer;
+use App\Models\Message;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -19,6 +21,8 @@ class ExchangeController extends Controller
     public function index()
     {
         $exchanges = Exchange::search()
+            ->whereNull('exchange_id')
+            ->withCount('offers')
             ->paginate(5);
 
         return view('exchanges.index', compact('exchanges'));
@@ -29,34 +33,16 @@ class ExchangeController extends Controller
         return view('exchanges.create');
     }
 
-    public function store(Request $request)
+    public function store(ExchangeRequest $request)
     {
-        $exchangeData = $request->validate([
-            'book_id'  => 'required|integer',
-            'book_condition' => 'required',
-            'expected_book_id'  => 'nullable|integer',
-            'description'   => 'nullable',
-            'previews'      => 'required|exclude',
-            'previews.*'      => 'required|image',
-        ]);
-
-        $exchange = $request->user()->exchanges()->create($exchangeData);
-
-        if ($request->hasFile('previews')) {
-            $previews = [];
-            foreach ($request->previews as $preview) {
-                $previews[]['image'] = $preview->store('exchanges');
-            }
-            $exchange->previews()->createMany($previews);
-        }
-
+        $exchange = Exchange::saveFromRequest($request);
         return redirect()->route('exchanges.show', $exchange->id)->with('succes', 'Your exchange request has been posted. Please for offers from others.');
     }
 
     public function show(Exchange $exchange)
     {
         $similar_books = Book::where('category', 'like', "%{$exchange->book->category}%")
-            ->take(6)
+            ->take(4)
             ->with(['writers', 'translators'])
             ->get();
         return view('exchanges.show', compact('exchange', 'similar_books'));
@@ -67,22 +53,37 @@ class ExchangeController extends Controller
         return view('exchanges.offers', compact('exchange'));
     }
 
-    public function acceptOffer(Exchange $exchange, ExchangeOffer $offer)
+    public function setPickupLocation(Request $request, Exchange $exchange)
     {
+        $request->validate([
+            'pickup_location' => 'required',
+            'pickup_time' => 'required|date|after:now',
+        ]);
 
-        if (!$exchange->accepted_offer_id && $exchange->id == $offer->exchange_id) {
-            // Make transaction between exchange parties
-            $exchange->user->balance += $exchange->book_worth - $offer->book_worth;
-            $exchange->user->save();
-            $offer->user->balance += $offer->book_worth - $exchange->book_worth;
-            $offer->user->save();
+        $exchange->pickup_location = $request->pickup_location;
+        $exchange->pickup_time = $request->pickup_time;
+        $exchange->save();
 
-            // Set accepted offer
-            $exchange->accepted_offer_id = $offer->id;
-            return $exchange->save();
-        } else {
-            throw new Exception("Coul not accept this offer! Cancel previous excahnge first and make sure the exchange & offer match.");
-        }
-        return false;
+        $text = 'Pickup loaction & time has been set by ' . auth()->user()->name .
+            ' to exchange book ' . $exchange->book->name . ' and ' . $exchange->accepted_offer->book->name . PHP_EOL . PHP_EOL .
+            'Location: ' . $exchange->pickup_location . PHP_EOL .
+            'Time: ' . date('d M Y - h:m A', strtotime($exchange->pickup_time));
+
+        Message::createMessageForUsers($exchange->user, $exchange->accepted_offer->user, $text);
+
+        return back()->with('success', 'Pickup location & time has been set.');
+    }
+
+    public function completeExchange(Exchange $exchange)
+    {
+        $exchange->complete = true;
+        $exchange->save();
+
+        $text = auth()->user()->name . ' has marked the exchange of book ' .
+            $exchange->book->name . ' and ' . $exchange->accepted_offer->book->name .
+            ' as completed.';
+
+        Message::createMessageForUsers($exchange->user, $exchange->accepted_offer->user, $text);
+        return back()->with('success', 'The exchange has been marked as complete.');
     }
 }

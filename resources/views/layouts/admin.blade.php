@@ -38,8 +38,8 @@
                     :active="request()->routeIs('admin.exchanges')">Exchanges</x-sidebar-nav-link>
 
                 <x-sidebar-nav-link icon="heroicon-s-users"
-                    :href="route('admin.challanges')"
-                    :active="request()->routeIs('admin.challanges')">Challanges</x-sidebar-nav-link>
+                    :href="route('admin.challenges')"
+                    :active="request()->routeIs('admin.challenges')">Challenges</x-sidebar-nav-link>
 
                 <hr>
 
@@ -85,12 +85,12 @@
                             :active="request()->routeIs('books.index')">
                             {{ __('Books') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('books.index')"
-                            :active="request()->routeIs('')">
-                            {{ __('Challanges') }}
+                        <x-nav-link :href="route('challenges.index')"
+                            :active="request()->routeIs('challenges.index')">
+                            {{ __('Challenges') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('books.index')"
-                            :active="request()->routeIs('')">
+                        <x-nav-link :href="route('discussions.index')"
+                            :active="request()->routeIs('discussions.index')">
                             {{ __('Discussions') }}
                         </x-nav-link>
                     </div>

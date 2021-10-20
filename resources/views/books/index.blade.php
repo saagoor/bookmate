@@ -7,7 +7,7 @@ $title = 'Books';
             <x-link-button class="border-gray-100 "
                 :href="route('exchanges.create')">
                 <x-heroicon-s-plus class="inline w-6 h-6 mr-1" />
-                <span class="pr-2">Post Exchange Request</span>
+                <span class="pr-2">Exchange</span>
             </x-link-button>
         @endauth
     </x-slot>

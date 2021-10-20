@@ -12,8 +12,8 @@
                     :active="request()->routeIs('dashboard.exchanges')">Exchanges</x-sidebar-nav-link>
 
                 <x-sidebar-nav-link icon="heroicon-s-users"
-                    :href="route('dashboard.challanges')"
-                    :active="request()->routeIs('dashboard.challanges')">Challanges</x-sidebar-nav-link>
+                    :href="route('dashboard.challenges')"
+                    :active="request()->routeIs('dashboard.challenges')">Challenges</x-sidebar-nav-link>
             </div>
             <div class="flex-1">
                 @yield('content')

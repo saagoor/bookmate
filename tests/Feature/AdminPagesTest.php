@@ -38,10 +38,10 @@ it('has exchanges page', function () {
     $response->assertSee('Exchanges');
 });
 
-it('has challanges page', function () {
-    $response = $this->get('/admin/challanges');
+it('has challenges page', function () {
+    $response = $this->get('/admin/challenges');
     $response->assertStatus(200);
-    $response->assertSee('Challanges');
+    $response->assertSee('Challenges');
 });
 
 it('has users page', function () {

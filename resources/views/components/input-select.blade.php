@@ -12,7 +12,7 @@
         {{ $slot }}
     </select>
 
-    @error($name)
+    @error(str_replace('[]', '', $name))
         <p class="text-sm font-semibold text-red-600">{{ $message }}</p>
     @enderror
 </div>

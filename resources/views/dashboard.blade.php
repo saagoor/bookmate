@@ -1,10 +1,16 @@
 <x-app-layout>
 
     <div class="container relative">
-        <div class="flex">
-            <div class="relative self-center flex-1 py-10">
+        <div class="flex flex-col md:flex-row-reverse items-center py-10">
+
+            <div class="w-1/2 md:w-1/3">
+                <x-img class="w-full" :src="asset('images/reader.jpg')" style="clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);" />
+            </div>
+
+            <div class="relative flex-1 py-10 text-center md:text-left">
                 <h1 class="mb-6 text-2xl font-black !leading-tight lg:mb-10 sm:text-4xl lg:text-7xl">
-                    Get <span class="text-primary-500">New Book</span> <br> in Exchange of <br> Your <span class="text-red-400">Old Book</span>
+                    <span class="text-primary-500">Give Books</span> Away, <br>
+                    <span class="text-green-400">Get Books</span> You Want
                 </h1>
 
                 <x-link-button class="px-6 py-3 text-lg" :href="route('exchanges.index')">
@@ -23,9 +29,7 @@
                 </div>
 
             </div>
-            <div class="w-1/3">
-                <x-img class="w-full" :src="asset('images/reader.jpg')" />
-            </div>
+
         </div>
     </div>
 

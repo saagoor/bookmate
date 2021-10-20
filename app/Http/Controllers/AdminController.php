@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\Challange;
+use App\Models\Challenge;
 use App\Models\Exchange;
 use App\Models\Publisher;
 use App\Models\User;
@@ -47,12 +47,12 @@ class AdminController extends Controller
         return view('admin.exchanges', compact('exchanges'));
     }
 
-    public function challanges()
+    public function challenges()
     {
-        $challanges = Challange::search()
+        $challenges = Challenge::search()
             ->with(['book'])
             ->paginate();
-        return view('admin.challanges', compact('challanges'));
+        return view('admin.challenges', compact('challenges'));
     }
 
     public function users()

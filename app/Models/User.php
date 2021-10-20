@@ -63,4 +63,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Exchange::class);
     }
+
+    public function conversations(){
+        return Conversation::where('user_one_id', $this->id)->orWhere('user_two_id', $this->id)->latest('updated_at');
+    }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class)->latest();
+    }
+
+    public function discussions(){
+        return $this->hasMany(Discussion::class)->latest();
+    }
 }

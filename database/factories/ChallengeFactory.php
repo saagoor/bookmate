@@ -3,19 +3,18 @@
 namespace Database\Factories;
 
 use App\Models\Book;
-use App\Models\Exchange;
-use App\Models\ExchangeOffer;
+use App\Models\Challenge;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ExchangeOfferFactory extends Factory
+class ChallengeFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ExchangeOffer::class;
+    protected $model = Challenge::class;
 
     /**
      * Define the model's default state.
@@ -25,10 +24,9 @@ class ExchangeOfferFactory extends Factory
     public function definition()
     {
         return [
-            'exchange_id'   => Exchange::inRandomOrder()->first(),
             'user_id'   => User::inRandomOrder()->first(),
-            'offered_book_id'   => Book::inRandomOrder()->first(),
-            'book_worth'    => rand(1, 5) * 100,
+            'book_id'   => Book::inRandomOrder()->first(),
+            'finish_at' => now()->addDays(rand(20, 50))->addMinutes(rand(10, 100))->addSeconds(1, 50),
         ];
     }
 }

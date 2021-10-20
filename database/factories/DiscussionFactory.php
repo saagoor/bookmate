@@ -3,8 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Book;
-use App\Models\Challange;
+use App\Models\Challenge;
 use App\Models\Discussion;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DiscussionFactory extends Factory
@@ -23,15 +24,13 @@ class DiscussionFactory extends Factory
      */
     public function definition()
     {
-        $choice = rand(1, 2);
-        if($choice == 1){
-            $model = Book::inRandomOrder()->first();
-        }else{
-            $model = Challange::inRandomOrder()->first();
-        }
+        $model = Book::inRandomOrder()->first();
         return [
-            'discussable_id'    => $model->id,
-            'discussable_type'  => get_class($model),
+            'discussable_type' => get_class($model),
+            'discussable_id' => $model->id,
+            'user_id' => User::inRandomOrder()->first()->id,
+            'title' => $this->faker->realTextBetween(50, 80),
+            'body' => $this->faker->realTextBetween(200, 300),
         ];
     }
 }

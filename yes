@@ -1,0 +1,6 @@
+[program:websockets]
+command=/usr/bin/php /home/sagor/apps/bookmate/artisan websockets:serve
+numprocs=1
+autostart=true
+autorestart=true
+user=sagor
