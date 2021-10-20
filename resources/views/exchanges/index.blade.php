@@ -14,12 +14,12 @@ $title = 'Books Available for Exchange';
 
     <div class="container max-w-3xl py-6 md:py-10">
 
-        <p class="text-lg font-semibold mb-3">
+        <p class="md:text-lg font-semibold mb-3">
             <a href="{{ route('ebooks.index') }}">Exchange eBooks <x-heroicon-o-arrow-right /></a>
         </p>
 
-        <div class="flex justify-between">
-            <h1 class="text-3xl font-semibold md:mb-6">{{ $title }}</h1>
+        <div class="flex justify-between items-center mb-4 md:mb-6">
+            <h1 class="text-xl md:text-3xl font-semibold">{{ $title }}</h1>
             <x-form-search />
         </div>
 

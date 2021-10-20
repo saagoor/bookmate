@@ -7,7 +7,7 @@
     getContents(force = false){
         let el = this.$refs.sheetContents;
         if(!el.hasAttribute('data-loaded') || force){
-            axios.get('{{ route('exchanges.offers', $exchange->id) }}')
+            axios.get('{{ route(($exchange->is_ebook ? 'ebooks.offers.index' : 'exchanges.offers.index'), $exchange) }}')
                 .then(response => {
                     el.innerHTML = response.data;
                     el.setAttribute('data-loaded', true);

@@ -88,15 +88,15 @@
                     placeholder="10%"
                     label="Markings Percentage"
             >
-                <option value="0">0%</option>
-                <option value="5">5%</option>
-                <option value="10">10%</option>
-                <option value="20">20%</option>
-                <option value="30">30%</option>
-                <option value="40">40%</option>
-                <option value="50">50%</option>
-                <option value="80">80%</option>
-                <option value="100">100%</option>
+                <option value="0">0% of pages</option>
+                <option value="5">5% of pages</option>
+                <option value="10">10% of pages</option>
+                <option value="20">20% of pages</option>
+                <option value="30">30% of pages</option>
+                <option value="40">40% of pages</option>
+                <option value="50">50% of pages</option>
+                <option value="80">80% of pages</option>
+                <option value="100">100% of pages</option>
             </x-input-select>
 
             <x-input-select

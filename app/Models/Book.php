@@ -87,7 +87,7 @@ class Book extends Model
 
     public function reviews()
     {
-        return $this->morphMany(Review::class, 'reviewable');
+        return $this->morphMany(Review::class, 'reviewable')->latest('updated_at');
     }
 
     public function exchanges()

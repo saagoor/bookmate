@@ -12,4 +12,9 @@ class EbookExchange extends Model
     use HasFactory, ExchangeTrait, Searchable;
 
     protected $guarded = [];
+
+    public function getEbookUrlAttribute()
+    {
+        return asset('storage/' . $this->ebook);
+    }
 }

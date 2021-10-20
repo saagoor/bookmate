@@ -9,7 +9,7 @@
             <x-link-button
                     color="light"
                     class="px-4 py-2 sm:px-5 sm:py-2.5 border-primary-100"
-                    href="{{ route('exchanges.create') }}">
+                    href="{{ route('ebooks.create') }}">
                 <x-heroicon-s-plus class="-mt-0.5 mr-1"/>
                 <span class="pr-2">Post Request</span>
             </x-link-button>

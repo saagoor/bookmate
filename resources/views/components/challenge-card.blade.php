@@ -1,5 +1,5 @@
 @props(['challenge'])
-<div class="flex flex-row-reverse gap-4">
+<div class="flex flex-col md:flex-row-reverse gap-4">
     <div class="flex flex-1 overflow-hidden card">
         <div>
             <x-img class="min-h-full w-36 h-44"

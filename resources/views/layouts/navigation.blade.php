@@ -123,13 +123,25 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div x-show="open" x-cloak x-collapse class="sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @auth
-                <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('dashboard')">
+                <x-responsive-nav-link :href="route('dashboard.index')" :active="request()->routeIs('dashboard.index')">
                     {{ __('Dashboard') }}
                 </x-responsive-nav-link>
             @endauth
+            <x-responsive-nav-link :href="route('exchanges.index')" :active="request()->routeIs('exchanges.index')">
+                {{ __('Exchanges') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('challenges.index')" :active="request()->routeIs('challenges.index')">
+                {{ __('Challenges') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('discussions.index')" :active="request()->routeIs('discussions.index')">
+                {{ __('Discussions') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.index')">
+                {{ __('Books') }}
+            </x-responsive-nav-link>
             @guest
                 <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
                     {{ __('Login') }}

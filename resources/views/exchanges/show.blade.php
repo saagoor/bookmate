@@ -6,9 +6,10 @@
     <x-slot name="title">{{ $book->name }}</x-slot>
     <x-slot name="actions">
         @auth
-            <x-link-button color="light"
-                           class="px-4 py-2 sm:px-5 sm:py-2.5 border-primary-100"
-                           href="{{ route('exchanges.create') }}">
+            <x-link-button
+                    color="light"
+                    class="px-4 py-2 sm:px-5 sm:py-2.5 border-primary-100"
+                    href="{{ route('exchanges.create') }}">
                 <x-heroicon-s-plus class="-mt-0.5 mr-1"/>
                 <span class="pr-2">Post Request</span>
             </x-link-button>
@@ -69,7 +70,7 @@
 
                     <div class="my-10">
                         <p class="text-lg font-semibold mb-3">Share on Social Media</p>
-                        <x-social-share title="Exchange - {{ $book->name}}" :url="url()->current()" />
+                        <x-social-share title="Exchange - {{ $book->name}}" :url="url()->current()"/>
                     </div>
                 </div>
                 <div class="flex-1">
@@ -121,12 +122,16 @@
                             <tr>
                                 <td class="px-4 py-2 border-t border-b">Book Markings</td>
                                 <td class="px-0 py-2 border-t border-b">:</td>
-                                <td class="px-4 py-2 border-t border-b">{{ $exchange->markings_percentage ?? '0' }}% of pages</td>
+                                <td class="px-4 py-2 border-t border-b">{{ $exchange->markings_percentage ?? '0' }}% of
+                                    pages
+                                </td>
                             </tr>
                             <tr>
                                 <td class="px-4 py-2 border-t border-b">Markings Density</td>
                                 <td class="px-0 py-2 border-t border-b">:</td>
-                                <td class="px-4 py-2 border-t border-b">{{ $exchange->markings_density ?? '0' }}% of each page</td>
+                                <td class="px-4 py-2 border-t border-b">{{ $exchange->markings_density ?? '0' }}% of
+                                    each page
+                                </td>
                             </tr>
                             <tr>
                                 <td class="px-4 py-2 border-t border-b">Missing Pages</td>

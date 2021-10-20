@@ -51,4 +51,10 @@ trait ExchangeTrait{
             ->where('user_id', auth()->user()->id ?? -1)
             ->without(['writers', 'translators']);
     }
+
+//    Attributes
+    public function getIsEbookAttribute()
+    {
+        return get_class($this) == \App\Models\EbookExchange::class;
+    }
 }

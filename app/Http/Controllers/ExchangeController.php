@@ -48,11 +48,6 @@ class ExchangeController extends Controller
         return view('exchanges.show', compact('exchange', 'similar_books'));
     }
 
-    public function offers(Exchange $exchange)
-    {
-        return view('exchanges.offers', compact('exchange'));
-    }
-
     public function setPickupLocation(Request $request, Exchange $exchange)
     {
         $request->validate([

@@ -7,10 +7,7 @@
         <div class="px-4 py-4 mb-6 bg-primary-300 sm:px-6 card">
             <p class="mb-3 text-2xl font-bold">{{ $exchange->offers_count }} Offer Received</p>
             {{-- Show offer viewer right sheet --}}
-            <x-exchange-offers
-                    :exchange="$exchange"
-                    button-class=""
-            />
+            <x-exchange-offers :exchange="$exchange" />
         </div>
         {{-- End if the current user posted this --}}
     @else
@@ -87,6 +84,51 @@
             </x-button>
         </div>
         {{-- End else if the current user did not post this exchange request--}}
+    @endif
+    {{-- If the current user posted this or sent an offer --}}
+    {{-- then show them the progress of this exchange --}}
+    @if($exchange->user_id == auth()->user()->id || $exchange->current_users_offer)
+        <div class="card mb-6 p-4 bg-white border-4 border-dashed border-primary-400">
+            <p class="font-semibold mb-2">Exchange Progress</p>
+            <aside class="text-lg font-bold leading-loose font-heading">
+                @php
+                    $steps = [];
+                    if($exchange->user_id == auth()->user()->id){
+                        $steps = [
+                            [
+                                'content' => 'Offers Received',
+                                'condition' => $exchange->offers_count
+                            ],
+                            [
+                                'content' => 'Offer Accepted',
+                                'condition' => $exchange->accepted_offer_id
+                            ],
+                            [
+                                'content' => 'eBook Available for Download',
+                                'condition' => $exchange->accepted_offer_id
+                            ],
+                        ];
+                    }else if($exchange->current_users_offer){
+                        $steps = [
+                            [
+                                'content' => 'Offer Sent',
+                                'condition' => $exchange->current_users_offer
+                            ],
+                            [
+                                'content' => 'Offer Accepted',
+                                'condition' => $exchange->accepted_offer_id == $exchange->current_users_offer->id
+                            ],
+                            [
+                                'content' => 'eBook Available for Download',
+                                'condition' => $exchange->accepted_offer_id == $exchange->current_users_offer->id
+                            ],
+                        ];
+                    }
+                @endphp
+                <x-exchange-steps :steps="$steps" :exchange="$exchange" />
+            </aside>
+        </div>
+        {{-- End if the current user posted this or sent an offer --}}
     @endif
     {{-- End if auth --}}
 @else

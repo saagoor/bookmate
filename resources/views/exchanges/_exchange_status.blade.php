@@ -109,17 +109,16 @@
                             ],
                             [
                                 'content' => 'Offer Accepted',
-                                'condition' => $exchange->current_users_offer && $exchange->accepted_offer_id == $exchange->current_users_offer->id
+                                'condition' => $exchange->accepted_offer_id == $exchange->current_users_offer->id
                             ],
                             [
                                 'content' => 'Set Pickup Location & Time',
-                                'condition' => $exchange->current_users_offer &&
-                                                $exchange->accepted_offer_id == $exchange->current_users_offer->id &&
+                                'condition' =>  $exchange->accepted_offer_id == $exchange->current_users_offer->id &&
                                                 $exchange->pickup_location && $exchange->pickup_time
                             ],
                             [
                                 'content' => 'Meetup & Exchange',
-                                'condition' => $exchange->current_users_offer && $exchange->accepted_offer_id == $exchange->current_users_offer->id && $exchange->complete
+                                'condition' => $exchange->accepted_offer_id == $exchange->current_users_offer->id && $exchange->complete
                             ],
                         ];
                     }

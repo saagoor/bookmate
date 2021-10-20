@@ -43,6 +43,12 @@ class Message extends Model
 
     public static function createMessageForUsers(User $userOne, User $userTwo, string $text){
         $conversation = Conversation::matchConversation($userOne, $userTwo);
+        if(!$conversation){
+            $conversation = Conversation::create([
+                'user_one_id'   => $userOne->id,
+                'user_two_id'   => $userTwo->id,
+            ]);
+        }
         $message = $conversation->messages()->create([
             'sender_id' => auth()->user()->id,
             'receiver_id' => $conversation->user_one_id != auth()->user()->id ? $conversation->user_one_id : $conversation->user_two_id,

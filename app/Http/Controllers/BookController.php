@@ -14,14 +14,14 @@ class BookController extends Controller
         $books = Book::search()
             ->withAvg('reviews', 'rating')
             ->paginate(12);
-            
+
         return view('books.index', compact('books'));
     }
 
     public function create()
     {
         return view('books.save', [
-            'book'  => new Book()
+            'book' => new Book()
         ]);
     }
 
@@ -34,6 +34,9 @@ class BookController extends Controller
 
     public function show(Book $book)
     {
+        $book->loadAvg('reviews', 'rating')
+            ->loadCount('reviews')
+            ->load('reviews.user');
         return view('books.show', compact('book'));
     }
 
@@ -59,15 +62,15 @@ class BookController extends Controller
     {
         return [
             'cover' => 'nullable|image',
-            'name'  => 'required',
-            'language'  => 'required',
-            'category'  => ['required', Rule::in(Book::$categories)],
-            'isbn'      => 'nullable',
-            'page_count'    => 'nullable|integer',
-            'published_at'  => 'required|date',
-            'publisher_id'  => 'required|integer',
+            'name' => 'required',
+            'language' => 'required',
+            'category' => ['required', Rule::in(Book::$categories)],
+            'isbn' => 'nullable',
+            'page_count' => 'nullable|integer',
+            'published_at' => 'required|date',
+            'publisher_id' => 'required|integer',
             'writer_id' => 'required',
-            'writer_id.*'   => 'integer',
+            'writer_id.*' => 'integer',
             'translator_id' => 'nullable',
             'translator_id.*' => 'integer',
         ];

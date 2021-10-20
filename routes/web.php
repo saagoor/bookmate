@@ -12,6 +12,7 @@ use App\Http\Controllers\ExchangeOfferController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersDashboardController;
@@ -53,11 +54,15 @@ Route::post('challenges/{challenge}/invite', [ChallengeController::class, 'invit
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('exchanges/{exchange}/offers', [ExchangeController::class, 'offers'])->name('exchanges.offers');
     Route::post('exchanges/{exchange}/offers/{offer}/accept', [ExchangeOfferController::class, 'acceptOffer'])->name('exchanges.offers.accept');
     Route::post('exchanges/{exchange}/offers/{offer}/reject', [ExchangeOfferController::class, 'rejectOffer'])->name('exchanges.offers.reject');
     Route::post('exchanges/{exchange}/pickup', [ExchangeController::class, 'setPickupLocation'])->name('exchanges.pickup');
     Route::post('exchanges/{exchange}/complete', [ExchangeController::class, 'completeExchange'])->name('exchanges.complete');
+
+    Route::post('ebooks/{ebook}/offers/{offer}/accept', [EbookExchangeOffersController::class, 'acceptOffer'])->name('ebooks.offers.accept');
+    Route::post('ebooks/{ebook}/offers/{offer}/reject', [EbookExchangeOffersController::class, 'rejectOffer'])->name('ebooks.offers.reject');
+
+    Route::resource('books.reviews', ReviewController::class)->shallow();
 
     Route::get('conversations', [MessagesController::class, 'conversations'])->name('conversations');
     Route::get('conversations/{user}', [MessagesController::class, 'showConversation'])->name('conversations.show');

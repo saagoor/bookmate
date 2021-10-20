@@ -8,6 +8,11 @@ use App\Models\Message;
 
 class ExchangeOfferController extends Controller
 {
+    public function index(Exchange $exchange)
+    {
+        return view('exchanges.offers', compact('exchange'));
+    }
+
     public function store(ExchangeRequest $request, Exchange $exchange)
     {
         Exchange::saveFromRequest($request, $exchange);

@@ -29,8 +29,8 @@
         </div>
     @endif
 
-    <div class="flex">
-        <div class="{{ $ebook ? 'w-1/6' : 'w-1/5' }}">
+    <div class="flex flex-col md:flex-row">
+        <div class="{{ $exchange->is_ebook ? 'w-1/6' : 'w-1/5' }}">
             <a href="{{ route('exchanges.show', $exchange) }}">
                 <x-img class="w-full h-full"
                        src="{{ $exchange->book->cover_url }}"
@@ -76,7 +76,7 @@
                             </td>
                         </tr>
                     @endif
-                    @if (!$ebook)
+                    @if (!$exchange->is_ebook)
                         <tr class="font-semibold text-primary-500">
                             <td>
                                 <x-heroicon-s-book-open/>
@@ -107,7 +107,7 @@
                     <x-link-button
                             color="light"
                             class="w-full h-full !text-base font-semibold rounded-none rounded-br-md"
-                            href="{{ route(($ebook ? 'ebooks.show' : 'exchanges.show'), $exchange) }}">View Details
+                            href="{{ route(($exchange->is_ebook ? 'ebooks.show' : 'exchanges.show'), $exchange) }}">View Details
                     </x-link-button>
                 </div>
             </div>
