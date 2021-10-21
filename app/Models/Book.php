@@ -16,7 +16,7 @@ class Book extends Model
     protected $guarded = [];
     protected $appends = ['cover_url'];
     protected $with = ['writers', 'translators'];
-    protected $withCount = ['reviews', 'months_exchanges', 'months_challenges', 'months_reads'];
+    protected $withCount = ['reviews', 'months_exchanges', 'months_challenges', 'months_reads', 'months_views'];
 
     public static array $searchables = [
         'name',
@@ -128,6 +128,18 @@ class Book extends Model
             ->whereYear('books_reads.updated_at', now());
     }
 
+    public function views()
+    {
+        return $this->hasMany(View::class);
+    }
+
+    public function months_views()
+    {
+        return $this->views()
+            ->whereMonth('created_at', now())
+            ->whereYear('created_at', now());
+    }
+
     //    Utilities
     public static function getForSelector()
     {
@@ -147,8 +159,10 @@ class Book extends Model
             ->get()
             ->price();
     }
+
 //    Attributes
-    public function getWriterAttribute() {
+    public function getWriterAttribute()
+    {
         return $this->writers->pluck('name')->join(', ');
     }
 }

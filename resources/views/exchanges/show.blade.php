@@ -50,7 +50,9 @@
                         </div>
 
                         <div class="relative z-10 flex flex-col justify-between w-2/3 pt-16 pb-40 pl-14 h-3/4 gap-y-14">
-                            <h1 class="text-3xl italic font-black">{{ $book->name }}</h1>
+                            <h1 class="text-3xl italic font-black">
+                                <a href="{{ route('books.show', $book) }}">{{ $book->name }}</a>
+                            </h1>
                             <div>
                                 <p class="text-sm">Written By</p>
                                 @foreach ($book->writers as $writer)
@@ -78,7 +80,9 @@
                     <div class="overflow-hidden border rounded-lg bg-primary-50">
                         @if ($book->cover)
                             <div class="flex flex-col gap-3 p-4">
-                                <h1 class="text-3xl italic font-black">{{ $book->name }}</h1>
+                                <h1 class="text-3xl italic font-black">
+                                    <a href="{{ route('books.show', $book) }}">{{ $book->name }}</a>
+                                </h1>
                                 <div>
                                     <p class="text-sm">Written By</p>
                                     @foreach ($book->writers as $writer)

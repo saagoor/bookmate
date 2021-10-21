@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Book;
 use App\Models\Challenge;
 use App\Models\Conversation;
+use App\Models\Discussion;
 use App\Models\EbookExchange;
 use App\Models\Exchange;
 use App\Models\Message;
@@ -53,6 +54,8 @@ class DatabaseSeeder extends Seeder
         EbookExchange::factory(10)->create();
 
         Challenge::factory(10)->hasParticipants(rand(2, 5))->create();
+
+        Discussion::factory(10)->hasComments(rand(2, 10))->create();
 
         DB::statement("SET foreign_key_checks=1");
     }

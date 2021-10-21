@@ -39,6 +39,8 @@ class ExchangeFactory extends Factory
             'missing_pages' => rand(1, 5),
             'description'   => $this->faker->paragraph(10),
             'pickup_location'   => rand(1, 5),
+            'latitude'  => $this->faker->latitude(),
+            'longitude' => $this->faker->longitude(),
         ];
     }
 

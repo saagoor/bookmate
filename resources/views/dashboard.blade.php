@@ -10,7 +10,7 @@
             <div class="relative flex-1 py-10 text-center md:text-left">
                 <h1 class="mb-6 text-2xl font-black !leading-tight lg:mb-10 sm:text-4xl lg:text-7xl">
                     <span class="text-primary-500">Give Books</span> Away, <br>
-                    <span class="text-green-400">Get Books</span> You Want
+                    <span class="text-green-400">Get Books</span> You Want.
                 </h1>
 
                 <x-link-button class="px-6 py-3 text-lg" :href="route('exchanges.index')">

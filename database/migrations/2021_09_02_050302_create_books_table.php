@@ -27,7 +27,7 @@ class CreateBooksTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('books_reads', function (Blueprint $table){
+        Schema::create('books_reads', function (Blueprint $table) {
             $table->id();
             $table->foreignId('book_id')
                 ->references('id')
@@ -40,6 +40,12 @@ class CreateBooksTable extends Migration
             $table->timestamps();
             $table->unique(['book_id', 'user_id']);
         });
+
+        Schema::create('views', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('book_id')->references('id')->on('books')->cascadeOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -50,5 +56,7 @@ class CreateBooksTable extends Migration
     public function down()
     {
         Schema::dropIfExists('books');
+        Schema::dropIfExists('books_reads');
+        Schema::dropIfExists('views');
     }
 }

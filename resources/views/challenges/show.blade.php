@@ -189,7 +189,9 @@
                         </div>
                     @endif
 
-                    <h1 class="text-xl font-semibold sm:text-3xl">{{ $challenge->book->name }}</h1>
+                    <h1 class="text-xl font-semibold sm:text-3xl">
+                        <a href="{{ route('books.show', $challenge->book) }}">{{ $challenge->book->name }}</a>
+                    </h1>
                     <p>{{ $challenge->created_at->format('F jS') }} to {{ $challenge->finish_at->format('F jS') }}
                     </p>
                 </div>

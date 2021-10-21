@@ -79,6 +79,11 @@ class ChallengeController extends Controller
             'percentage'    => 'required|integer|between:0,100'
         ]);
 
+        if($request->percentage == 100){
+            // Increment book's read count
+            $challenge->book->reads()->syncWithoutDetaching([$request->user()->id => ['user_id' => $request->user()->id]]);
+        }
+
         $challenge->participants()->sync([auth()->user()->id => ['percentage' => $request->percentage]], false);
 
         return back()->with('success', 'Your reading percentage has been updated.');

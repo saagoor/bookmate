@@ -31,6 +31,8 @@ class CreateExchangesTable extends Migration
             $table->string('pickup_location')->nullable();
             $table->timestamp('pickup_time')->nullable();
             $table->boolean('complete')->default(false);
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
             $table->timestamps();
             $table->unique(['exchange_id', 'user_id', 'book_id']);
         });

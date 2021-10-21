@@ -45,12 +45,12 @@
                 </h3>
                 <table>
                     <tr>
-                        <td>
+                        <td class="py-1">
                             <x-bi-pen-fill/>
                             Writer
                         </td>
-                        <td class="px-1">:</td>
-                        <td>
+                        <td class="p-1">:</td>
+                        <td class="py-1">
                             @foreach ($exchange->book->writers as $writer)
                                 @if (!$loop->first)
                                     <span> & </span>
@@ -61,12 +61,12 @@
                     </tr>
                     @if ($exchange->book->translators->count())
                         <tr>
-                            <td>
+                            <td class="py-1">
                                 <x-heroicon-s-translate/>
                                 Translator
                             </td>
-                            <td class="px-1">:</td>
-                            <td>
+                            <td class="p-1">:</td>
+                            <td class="py-1">
                                 @foreach ($exchange->book->translators as $translator)
                                     @if (!$loop->first)
                                         <span> & </span>
@@ -78,12 +78,20 @@
                     @endif
                     @if (!$exchange->is_ebook)
                         <tr class="font-semibold text-primary-500">
-                            <td>
+                            <td class="py-1">
                                 <x-heroicon-s-book-open/>
                                 Book Worth
                             </td>
-                            <td class="px-1">:</td>
+                            <td class="p-1">:</td>
                             <td class="capitalize">{{ $exchange->book_worth }}</td>
+                        </tr>
+                        <tr class="font-semibold">
+                            <td class="py-1">
+                                <x-heroicon-s-location-marker />
+                                Distance
+                            </td>
+                            <td class="p-1">:</td>
+                            <td class="capitalize">{{ round($exchange->distance, 1) }} km away</td>
                         </tr>
                     @endif
                 </table>

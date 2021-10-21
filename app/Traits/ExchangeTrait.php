@@ -13,6 +13,7 @@ trait ExchangeTrait{
         'user:name,email',
         'book.writers:name',
         'book.translators:name',
+        'book.publisher:name',
     ];
 
     public function book()

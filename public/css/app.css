@@ -1860,6 +1860,9 @@ select {
 .flex-shrink-0 {
 	flex-shrink: 0;
 }
+.border-collapse {
+	border-collapse: collapse;
+}
 .origin-top-left {
 	transform-origin: top left;
 }
@@ -3410,6 +3413,14 @@ select {
 		width: 15rem;
 	}
 
+	.md\:w-1\/5 {
+		width: 20%;
+	}
+
+	.md\:w-auto {
+		width: auto;
+	}
+
 	.md\:max-w-sm {
 		max-width: 24rem;
 	}
@@ -3442,6 +3453,10 @@ select {
 		align-self: flex-start;
 	}
 
+	.md\:self-center {
+		align-self: center;
+	}
+
 	.md\:p-6 {
 		padding: 1.5rem;
 	}
@@ -3460,6 +3475,10 @@ select {
 		text-align: left;
 	}
 
+	.md\:text-right {
+		text-align: right;
+	}
+
 	.md\:text-2xl {
 		font-size: 1.5rem;
 		line-height: 2rem;
@@ -3473,6 +3492,11 @@ select {
 	.md\:text-3xl {
 		font-size: 1.875rem;
 		line-height: 2.25rem;
+	}
+
+	.md\:text-base {
+		font-size: 1rem;
+		line-height: 1.5rem;
 	}
 }
 @media (min-width: 1024px) {

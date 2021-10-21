@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\LocationScraper;
 use App\Traits\ExchangeTrait;
 use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Exchange extends Model
 {
@@ -34,9 +36,16 @@ class Exchange extends Model
 
     public static function saveFromRequest($request, $parent = null) : Exchange
     {
+        $coordinates = $coordinates = (new LocationScraper)->get_user_coordinates();
+        if(!$coordinates){
+            throw new NotFoundHttpException('Could not get your coordinates, please try again.');
+        }
         $exchange = Exchange::make($request->validated());
         $exchange->book_worth = $exchange->calculateBookWorth();
         $exchange->user_id = $request->user()->id;
+        $exchange->latitude = $coordinates->latitude;
+        $exchange->longitude = $coordinates->longitude;
+
         if ($parent){
             $exchange->exchange_id = $parent->id;
             $exchange->expected_book_id = null;

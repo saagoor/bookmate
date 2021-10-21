@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ExchangeRequest;
+use App\LocationScraper;
 use App\Models\Book;
 use App\Models\Conversation;
 use App\Models\Exchange;
 use App\Models\Message;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExchangeController extends Controller
 {
@@ -20,10 +22,19 @@ class ExchangeController extends Controller
 
     public function index()
     {
-        $exchanges = Exchange::search()
-            ->whereNull('exchange_id')
-            ->withCount('offers')
-            ->paginate(5);
+        $coordinates = (new LocationScraper)->get_user_coordinates();
+        $query = Exchange::search()->whereNull('exchange_id');
+        if ($coordinates) {
+            $lat = $coordinates->latitude;
+            $long = $coordinates->longitude;
+            $query = $query->select('*', DB::raw("6371 * acos(cos(radians(" . $lat . "))
+                * cos(radians(latitude))
+                * cos(radians(longitude) - radians(" . $long . "))
+                + sin(radians(" . $lat . "))
+                * sin(radians(latitude))) AS distance"))
+                ->orderBy('distance', 'ASC');
+        }
+        $exchanges = $query->withCount('offers')->paginate(5);
 
         return view('exchanges.index', compact('exchanges'));
     }

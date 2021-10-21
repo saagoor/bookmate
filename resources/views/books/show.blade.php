@@ -2,11 +2,11 @@
 
     <div class="container py-8">
 
-        <div class="bg-white shadow-xl rounded-xl overflow-hidden flex mb-6">
-            <div class="w-1/5">
-                <x-img :src="$book->cover_url"/>
+        <div class="bg-white shadow-xl rounded-xl overflow-hidden flex flex-col md:flex-row mb-6">
+            <div class="md:w-1/5">
+                <x-img class="w-full" :src="$book->cover_url"/>
             </div>
-            <div class="flex-1 p-6">
+            <div class="flex-1 p-4 md:p-6">
                 <h1 class="text-2xl font-semibold mb-5">{{ $book->name }}</h1>
                 <table>
                     <tr>
@@ -66,6 +66,27 @@
                         <td>{{ $book->publisher->name }}</td>
                     </tr>
                 </table>
+            </div>
+            <div class="flex-1 md:self-center p-4 md:p-6">
+                <p class="mb-2 font-semibold">Monthly Statistics</p>
+                <div class="grid grid-cols-2 divide-x divide-y border rounded-md border-collapse">
+                    <div class="p-4 border-collapse">
+                        <p class="font-semibold">Views</p>
+                        <p class="text-2xl font-semibold">{{ $book->months_views_count }}</p>
+                    </div>
+                    <div class="p-4 border-collapse">
+                        <p class="font-semibold">Reads</p>
+                        <p class="text-2xl font-semibold">{{ $book->months_reads_count }}</p>
+                    </div>
+                    <div class="p-4 border-collapse">
+                        <p class="font-semibold">Exchanges</p>
+                        <p class="text-2xl font-semibold">{{ $book->months_exchanges_count }}</p>
+                    </div>
+                    <div class="p-4 border-collapse">
+                        <p class="font-semibold">Challenges</p>
+                        <p class="text-2xl font-semibold">{{ $book->months_challenges_count }}</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -127,7 +148,7 @@
             <div class="flex-1 divide-y bg-white rounded-xl shadow-xl">
                 @forelse ($book->reviews as $review)
                     <div class="p-6">
-                        <div class="flex gap-4 items-center mb-3">
+                        <div class="flex gap-4 items-center flex-wrap mb-3">
                             <x-img class="h-12 w-12 rounded-full bg-primary-300" :src="$review->user->image_url"/>
                             <div class="leading-tight flex-1">
                                 <p class="font-semibold">{{ $review->user->name }}</p>
@@ -136,7 +157,7 @@
                                     <?php printf("%.1f", $review->rating) ?>
                                 </div>
                             </div>
-                            <p class="text-right">{{ $review->updated_at->diffForHumans() }}</p>
+                            <p class="w-full md:w-auto text-sm md:text-base md:text-right">{{ $review->updated_at->diffForHumans() }}</p>
                         </div>
                         <div>
                             {{ $review->text }}
