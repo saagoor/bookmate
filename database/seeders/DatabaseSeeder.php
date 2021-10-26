@@ -33,18 +33,24 @@ class DatabaseSeeder extends Seeder
             'admin' => true,
         ]);
         User::factory()->create([
-            'name' => 'মেহেদী হাসাইন',
+            'name' => 'Mehedi Hassain',
             'email' => 'mhsagor91@gmail.com',
+            'password' => bcrypt('password'),
+            'admin' => false,
+        ]);
+        User::factory()->create([
+            'name' => 'Abu Obayed Shabbir',
+            'email' => 'levelzerosss@gmail.com',
             'password' => bcrypt('password'),
             'admin' => false,
         ]);
 
         User::factory(10)->create()->each(function ($user, $index) {
-            if ($index % 2 == 0) {
-                Conversation::factory()->hasMessages(rand(10, 20))->create([
-                    'user_one_id' => $user->id,
-                ]);
-            }
+//            if ($index % 2 == 0) {
+//                Conversation::factory()->hasMessages(rand(10, 20))->create([
+//                    'user_one_id' => $user->id,
+//                ]);
+//            }
         });
 
         $this->call(BooksSeeder::class);

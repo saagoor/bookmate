@@ -34,13 +34,12 @@ class ExchangeFactory extends Factory
             'book_edition'  => rand(1, 7),
             'book_print'    => $this->faker->randomElement(['original', 'nilkhet', 'news']),
             'book_age'  => rand(0.1, 5) * 10,
-            'markings_percentage'   => rand(1, 5) * 5,
-            'markings_density'   => rand(1, 5) * 5,
-            'missing_pages' => rand(1, 5),
+            'markings_percentage'   => rand(1, 2) * 5,
+            'markings_density'   => rand(1, 2) * 5,
+            'missing_pages' => rand(1, 3),
             'description'   => $this->faker->paragraph(10),
-            'pickup_location'   => rand(1, 5),
-            'latitude'  => $this->faker->latitude(),
-            'longitude' => $this->faker->longitude(),
+            'latitude'  => $this->faker->latitude(23.70, 23.99),
+            'longitude' => $this->faker->longitude(90.30, 90.40),
         ];
     }
 

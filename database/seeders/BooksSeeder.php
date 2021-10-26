@@ -65,7 +65,9 @@ class BooksSeeder extends Seeder
         $books = Book::all();
         $books->each(function($book) use($writers){
             $book->writers()->sync(rand(1, $writers->count()));
-            $book->authors()->syncWithPivotValues(rand(1, $writers->count()), ['translator' => true], false);
+            if(rand(0, 1)){
+                $book->authors()->syncWithPivotValues(rand(1, $writers->count()), ['translator' => true], false);
+            }
             $book->reviews()->saveMany(Review::factory(rand(2, 4))->make());
             $book->views()->createMany([[], [], [], [], []]);
             $book->reads()->sync(User::inRandomOrder()->take(rand(2, 10))->get(['id']));

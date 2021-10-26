@@ -8,7 +8,7 @@
     }else if ($exchange->accepted_offer_id) {
         if (auth()->check() && $exchange->accepted_offer->user_id == auth()->user()->id) {
             $label = 'Offer Accepted';
-        } elseif ($exchange->user_id == auth()->user()->id) {
+        } elseif (auth()->check() && $exchange->user_id == auth()->user()->id) {
             $label = $exchange->offers_count . ' Offers';
         } else {
             $label = 'Not Available';

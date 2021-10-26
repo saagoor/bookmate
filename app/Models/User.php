@@ -53,7 +53,7 @@ class User extends Authenticatable
     {
         $default = "https://avatars.dicebear.com/api/croodles-neutral/:" . $this->email . ".svg";
         $default = "https://unavatar.now.sh/{$this->email}?fallback={$default}";
-        if($this->image){
+        if ($this->image) {
             return asset('storage/' . $this->image);
         }
         return $default;
@@ -64,15 +64,31 @@ class User extends Authenticatable
         return $this->hasMany(Exchange::class);
     }
 
-    public function conversations(){
+    public function conversations()
+    {
         return Conversation::where('user_one_id', $this->id)->orWhere('user_two_id', $this->id)->latest('updated_at');
     }
 
-    public function transactions(){
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class)->latest();
     }
 
-    public function discussions(){
+    public function discussions()
+    {
         return $this->hasMany(Discussion::class)->latest();
+    }
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function canReview(User $user)
+    {
+        return Exchange::whereIn('user_id', [$this->id, $user->id])
+            ->whereHas('accepted_offer', fn($query) => $query->whereIn('user_id', [$this->id, $user->id]))
+            ->where('complete', true)
+            ->exists();
     }
 }

@@ -6,8 +6,9 @@
                     <img :src="user.image_url"
                          class="w-10 h-10 rounded-full object-cover bg-gray-100">
                     <div class="flex-1">
-                        <p class="text-sm font-semibold truncate"
-                           x-text="user.name"></p>
+                        <p class="text-sm font-semibold truncate">
+                            <a :href="`/users/${user.id}`" x-text="user.name"></a>
+                        </p>
                         <p class="text-xs truncate" x-text="user.email"></p>
                     </div>
                     <x-button

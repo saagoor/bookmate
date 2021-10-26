@@ -20,6 +20,7 @@
         @else
             <p class="text-sm">You will have to pay extra: {{ abs($worth_calculation) }}</p>
         @endif
+        <p class="text-sm font-semibold">{{ round($offer->distance, 1) }} Km away from here.</p>
     @endif
 
     @if ($exchange->accepted_offer_id == $offer->id)
@@ -48,7 +49,8 @@
         </div>
     @else
         @if (auth()->user()->admin || auth()->user()->id == $exchange->user_id)
-            <form action="{{ route(($exchange->is_ebook ? 'ebooks.offers.accept' : 'exchanges.offers.accept'), [$exchange, $offer]) }}" method="post">
+            <form action="{{ route(($exchange->is_ebook ? 'ebooks.offers.accept' : 'exchanges.offers.accept'), [$exchange, $offer]) }}"
+                  method="post">
                 @csrf
                 <x-button class="px-2 py-1 mt-2 tracking-normal capitalize">
                     <x-heroicon-o-check class="h-4 mt-0 -ml-1"/>

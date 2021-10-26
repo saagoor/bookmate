@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
-    public function store(Request $request, Book $book)
+    public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'rating' => 'required|between:1,5',
             'text' => 'required',
+            'reviewable_id' => 'required|integer',
+            'reviewable_type'   => 'required',
         ]);
-        $book->reviews()->updateOrCreate(
-            ['user_id' => $request->user()->id], [
-            'rating' => $request->rating,
-            'text' => $request->text,
-        ]);
+
+        Review::updateOrCreate(['user_id' => $request->user()->id], $validated);
+
         return back()->with('success', 'Your review has been posted.');
     }
 }

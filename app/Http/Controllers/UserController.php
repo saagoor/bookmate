@@ -46,6 +46,12 @@ class UserController extends Controller
         return back()->with('success', 'Profile has been updated.');
     }
 
+    public function show(User $user)
+    {
+        $user->load('reviews');
+        return view('users.show', compact('user'));
+    }
+
     public function destroy(User $user)
     {
         $user->delete();

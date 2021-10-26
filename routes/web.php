@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('ebooks/{ebook}/offers/{offer}/accept', [EbookExchangeOffersController::class, 'acceptOffer'])->name('ebooks.offers.accept');
     Route::post('ebooks/{ebook}/offers/{offer}/reject', [EbookExchangeOffersController::class, 'rejectOffer'])->name('ebooks.offers.reject');
 
-    Route::resource('books.reviews', ReviewController::class)->shallow();
+    Route::resource('reviews', ReviewController::class);
 
     Route::get('conversations', [MessagesController::class, 'conversations'])->name('conversations');
     Route::get('conversations/{user}', [MessagesController::class, 'showConversation'])->name('conversations.show');

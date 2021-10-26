@@ -35,9 +35,6 @@ class BookController extends Controller
     public function show(Book $book)
     {
         $book->views()->create();
-        $book->loadAvg('reviews', 'rating')
-            ->loadCount('reviews')
-            ->load('reviews.user');
         return view('books.show', compact('book'));
     }
 

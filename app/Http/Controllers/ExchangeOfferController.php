@@ -3,13 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ExchangeRequest;
+use App\LocationScraper;
 use App\Models\Exchange;
 use App\Models\Message;
+use Illuminate\Support\Facades\DB;
 
 class ExchangeOfferController extends Controller
 {
     public function index(Exchange $exchange)
     {
+        $coordinates = (new LocationScraper)->get_user_coordinates();
+        if ($coordinates) {
+            $exchange->load(['offers' => function ($query) use ($coordinates) {
+                $lat = $coordinates->latitude;
+                $long = $coordinates->longitude;
+                $query = $query->select('*', DB::raw("6371 * acos(cos(radians(" . $lat . "))
+                * cos(radians(latitude))
+                * cos(radians(longitude) - radians(" . $long . "))
+                + sin(radians(" . $lat . "))
+                * sin(radians(latitude))) AS distance"))
+                    ->orderBy('distance', 'ASC');
+            }]);
+        }
         return view('exchanges.offers', compact('exchange'));
     }
 
